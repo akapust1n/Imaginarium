@@ -9,6 +9,7 @@ git remote add deploy ssh://git@$IP:$PORT$DEPLOY_DIR
 git push deploy frontend
 
 # Skip this command if you don't need to execute any additional commands after deploying.
+ssh-copy-id apps@$IP
 ssh -o "StrictHostKeyChecking no" apps@$IP -p $PORT <<EOF
   cd $DEPLOY_DIR
   npm install
