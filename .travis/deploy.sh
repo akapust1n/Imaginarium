@@ -13,5 +13,6 @@ ssh -o "StrictHostKeyChecking no" apps@$IP -p $PORT <<EOF
   cd $DEPLOY_DIR
   npm install
   cd src
+  kill -9 `lsof -t -i:3000`
   npm start
 EOF
