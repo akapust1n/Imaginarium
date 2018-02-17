@@ -5,3 +5,6 @@ node_js:
 branches:
   only:
     - frontend
+
+after_success:
+  - .travis/deploy.sh
