@@ -11,7 +11,8 @@ git push deploy frontend
 # Skip this command if you don't need to execute any additional commands after deploying.
 ssh -o "StrictHostKeyChecking no" apps@$IP -p $PORT <<EOF
   cd $DEPLOY_DIR
+  kill -9 `lsof -t -i:3000`
   npm install
-  cd src
-  npm start
+  npm run build
+  serve -s build -p 3000
 EOF
