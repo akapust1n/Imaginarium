@@ -12,5 +12,6 @@ git push deploy frontend
 ssh -o "StrictHostKeyChecking no" apps@$IP -p $PORT <<EOF
   cd $DEPLOY_DIR
   npm install
+  cd src
   npm start
 EOF
