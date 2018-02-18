@@ -1,5 +1,5 @@
 ## Build status
-backend: [![Build Status](https://travis-ci.org/akapust1n/Imagination.svg?branch=backend)](https://travis-ci.org/akapust1n/Imagination)
+backend: [![Build Status](https://travis-ci.org/akapust1n/Imagination.svg?branch=backend)](https://travis-ci.org/akapust1n/Imagination)  
 frontend: [![Build Status](https://travis-ci.org/akapust1n/Imagination.svg?branch=frontend)](https://travis-ci.org/akapust1n/Imagination)
 
 # Imagination
