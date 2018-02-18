@@ -5,17 +5,20 @@ import axios from 'axios'
 
 
 class App extends Component {
-    constructor () {
-        console.log('constructor: ' + window.location.search.substring(1));
+    constructor() {
         super();
+        this.vars = {};
+        window.location.search.substring(1).split('&').forEach(pair => {
+            let pairSplit = pair.split('=');
+            this.vars[pairSplit[0]] = pairSplit[1];
+        });
         this.state = {
             username: ''
         };
-        App.handleClick = App.handleClick.bind(this)
+        this.handleClick = this.handleClick.bind(this)
     }
 
     render() {
-        console.log('render: ' + window.location.search.substring(1));
         return (
             <div className="App">
                 <header className="App-header">
@@ -25,14 +28,15 @@ class App extends Component {
                 <p className="App-intro">
                     To get started, edit <code>src/App.js</code> and save to reload.
                 </p>
-                <button className='button' onClick={App.handleClick}>Click Me</button>
+                <button className='button' onClick={this.handleClick}>Click Me</button>
                 <p>{this.state.username}</p>
             </div>
         );
     }
 
-    static handleClick () {
-        console.log('handleClick: ' + window.location.search.substring(1));
+    handleClick() {
+        console.log(this.vars);
+        console.log(this.vars['viewer_id']);
         axios.get('https://kapust1n.ru:5000/').then(
             response => this.setState({username: response.data}),
             error => console.log(error)
