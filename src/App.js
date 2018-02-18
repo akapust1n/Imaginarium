@@ -6,6 +6,7 @@ import axios from 'axios'
 
 class App extends Component {
     constructor () {
+        console.log('constructor: ' + window.location.search.substring(1));
         super();
         this.state = {
             username: ''
@@ -14,6 +15,7 @@ class App extends Component {
     }
 
     render() {
+        console.log('render: ' + window.location.search.substring(1));
         return (
             <div className="App">
                 <header className="App-header">
@@ -30,6 +32,7 @@ class App extends Component {
     }
 
     static handleClick () {
+        console.log('handleClick: ' + window.location.search.substring(1));
         axios.get('https://kapust1n.ru:5000/').then(
             response => this.setState({username: response.data}),
             error => console.log(error)
