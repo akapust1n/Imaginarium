@@ -22,12 +22,19 @@ LIBS += \
        -lboost_timer\
        -lboost_coroutine \
        -lboost_filesystem
+
 SOURCES +=  main.cpp \
-    Player.cpp \
     Matchmaking.cpp \
-    Match.cpp
+    Match.cpp \
+    Player.cpp \
+    ../3rd_part/md5/md5.cpp
 
 HEADERS += \
     Player.h \
     Matchmaking.h \
-    Match.h
+    Match.h \
+    Player.h \
+    ../3rd_part/md5/md5.h
+
+DISTFILES += \
+    ../3rd_part/md5/README.md
