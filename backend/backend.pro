@@ -27,14 +27,16 @@ SOURCES +=  main.cpp \
     Matchmaking.cpp \
     Match.cpp \
     Player.cpp \
-    ../3rd_part/md5/md5.cpp
+    ../3rd_part/md5/md5.cpp \
+    Parser.cpp
 
 HEADERS += \
     Player.h \
     Matchmaking.h \
     Match.h \
     Player.h \
-    ../3rd_part/md5/md5.h
+    ../3rd_part/md5/md5.h \
+    Parser.h
 
 DISTFILES += \
     ../3rd_part/md5/README.md

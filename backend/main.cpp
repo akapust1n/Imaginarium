@@ -1,33 +1,36 @@
-#include "crow.h"
 #include "../3rd_part/md5/md5.h"
+#include "Matchmaking.h"
+#include "crow.h"
 using namespace crow;
 
 int main()
 {
     crow::SimpleApp app;
-    CROW_ROUTE(app, "/")([](){
+    Matchmaking mk;
+    CROW_ROUTE(app, "/")
+    ([]() {
         response res;
-        res.add_header("Access-Control-Allow-Origin", "*");
-        res.body= "Hello world!";
+       // res.add_header("Access-Control-Allow-Origin", "*");
+        res.body = "Hello world!";
         return res;
     });
 
-    CROW_ROUTE(app, "/auth")([](){
-        return crow::response(200);
-    });
-    char cstring[] = "Foo baz, testing.";
-    std::string str = cstring;
+    CROW_ROUTE(app, "/ws")
+        .websocket()
+        .onopen([&](crow::websocket::connection& conn) {
+            CROW_LOG_INFO << "new websocket connection";
+            mk.addPlayer({ &conn });
 
-    /* MD5 from std::string */
-    printf("md5sum: %s\n",  md5(  str ).c_str());
+        })
+        .onclose([&](crow::websocket::connection& conn, const std::string& reason) {
+            CROW_LOG_INFO << "websocket connection closed: " << reason;
 
-    /* MD5 from c-string */
-    printf("md5sum: %s\n",  md5(  cstring ).c_str());
+        })
+        .onmessage([&](crow::websocket::connection& conn, const std::string& data, bool is_binary) {
+            CROW_LOG_INFO << "connection message";
 
-    /* Short MD5 from c-string */
-    printf("md5sum6: %s\n", md5sum6( cstring ).c_str());
+            conn.send_text(data);
+        });
 
-    /* Short MD5 from std::string */
-    printf("md5sum6: %s\n", md5sum6( str ).c_str());
     app.port(5001).multithreaded().run();
 }

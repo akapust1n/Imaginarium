@@ -20,6 +20,8 @@ tex_*
 **/.idea/**
 *.pdb
 *.debug
+/tests/node_modules/
+/tests/package-lock.json
 
 =======
 # Windows image file caches
