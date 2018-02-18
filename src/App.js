@@ -30,9 +30,9 @@ class App extends Component {
     }
 
     static handleClick () {
-        axios.get('http://kapust1n.ru:5000/').then(
-            response => this.setState({username: response.toString()}),
-            error => this.setState({username: error.toString()})
+        axios.get('https://kapust1n.ru:5000/').then(
+            response => this.setState({username: response.data}),
+            error => console.log(error)
         );
     }
 }
