@@ -1,16 +1,16 @@
 import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
 import axios from 'axios'
 import './App.css';
 import Rules from './Rules'
 import Loading from './Loading'
 import vars from './vars'
 import socket from './socket'
+import renderRoot from './director'
 
 class App extends Component {
     constructor() {
         super();
-        this.joinGame = this.joinGame.bind(this);
+        App.joinGame = App.joinGame.bind(this);
     }
 
     render() {
@@ -19,7 +19,7 @@ class App extends Component {
                 <h1>Удачи и веселой игры!</h1>
                 <div className='App-menu'>
                     <button className='btn btn-primary btn-lg btn-block App-menu-button'
-                            onClick={this.joinGame}>Играть
+                            onClick={App.joinGame}>Играть
                     </button>
                     <Rules/>
                 </div>
@@ -27,12 +27,8 @@ class App extends Component {
         );
     }
 
-    joinGame() {
-        ReactDOM.unmountComponentAtNode(document.getElementById('root'));
-        let loading = ReactDOM.render(<Loading/>, document.getElementById('root'));
-        loading.setStatus('Авторизация...');
-        socket.addHandler('Error', content => loading.setStatus(content));
-        socket.addHandler('Queue', () => loading.setStatus('Подбор игроков...'));
+    static joinGame() {
+        renderRoot(<Loading/>);
         let data = {
             'type': 'GameJoin',
             'content': {

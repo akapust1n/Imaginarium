@@ -1,14 +1,23 @@
 import React, {Component} from 'react';
 import './loader.css';
 import './loading.css'
+import socket from "./socket";
+import renderRoot from "./director";
+import Game from "./Game";
 
 class Loading extends Component {
     constructor() {
         super();
         this.state = {
-            status: ''
+            status: 'Авторизация...'
         };
         this.setStatus = this.setStatus.bind(this);
+        socket.setHandler('Error', content => this.setStatus(content));
+        socket.setHandler('Queue', () => this.setStatus('Подбор игроков...'));
+        socket.setHandler('MasterTurn', content => {
+            let game = renderRoot(<Game/>);
+            game.updateState(content);
+        });
     }
 
     render() {

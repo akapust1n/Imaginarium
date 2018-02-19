@@ -12,7 +12,7 @@ socket.onclose = event => {
 };
 socket.onerror = error => console.log("Ошибка " + error.message);
 socket.handlers = {};
-socket.addHandler = function (type, handler) {
+socket.setHandler = function (type, handler) {
     socket.handlers[type] = handler;
 };
 socket.onmessage = event => {
