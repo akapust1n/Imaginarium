@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import './App.css';
-import './loader.css';
+import ReactDOM from 'react-dom';
 import axios from 'axios'
+import './App.css';
 import Socket from './socket'
 import Rules from './Rules'
-
+import Loading from './Loading'
 
 class App extends Component {
     constructor() {
@@ -33,6 +33,11 @@ class App extends Component {
     }
 
     joinGame() {
+        ReactDOM.unmountComponentAtNode(document.getElementById('root'));
+        let loading = ReactDOM.render(<Loading/>, document.getElementById('root'));
+        loading.setStatus('Авторизация...');
+        this.socket.addHandler('Error', content => loading.setStatus(content));
+        this.socket.addHandler('Queue', () => loading.setStatus('Подбор игроков...'));
         let data = {
             'type': 'GameJoin',
             'content': {
