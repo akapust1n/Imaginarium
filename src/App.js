@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import axios from 'axios'
+import {w3cwebsocket as W3CWebSocket} from 'websocket'
 
 
 class App extends Component {
@@ -15,7 +16,7 @@ class App extends Component {
         this.state = {
             username: ''
         };
-        this.socket = new WebSocket("wss://kapust1n.ru:5000/ws");
+        this.socket = new W3CWebSocket("wss://kapust1n.ru:5000/ws");
         this.socket.onopen = function () {
             console.log("Соединение установлено.");
         };
