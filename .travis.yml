@@ -29,6 +29,7 @@ before_install:
   - sudo apt-get install libboost-all-dev
   - sudo apt install qt5-default
   - sudo apt-get install git
+  - sudo -H pip install conan
   - git clone https://github.com/ipkn/crow
 
 install:
@@ -36,6 +37,7 @@ install:
 
 script:
   - cd backend
+  - conan install .
   - qmake
   - make
   - cd ..

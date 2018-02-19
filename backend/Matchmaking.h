@@ -3,13 +3,15 @@
 #include "Match.h"
 #include <mutex>
 #include "Player.h"
+#include <unordered_set>
+
 
 class Matchmaking
 {
 public:
     Matchmaking();
     void findMath(Player player);
-    void addPlayer(Player player);
+    void addPlayer(crow::websocket::connection *conn);
 private:
     std::vector<Match> matches;
     std::vector<Player> players;

@@ -13,6 +13,7 @@ ssh -o "StrictHostKeyChecking no" apps@$IP -p $PORT <<EOF
   git pull  origin backend
   cd backend
   rm *.o Makefile
+  conan install .
   qmake
   make
   pkill -f backend

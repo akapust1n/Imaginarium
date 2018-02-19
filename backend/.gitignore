@@ -1,6 +1,8 @@
 # This file is used to ignore files which are generated
 # ----------------------------------------------------------------------------
-
+conanbuildinfo.pri
+conaninfo.txt
+conanbuildinfo.txt
 *~
 *.autosave
 *.a
