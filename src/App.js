@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import './App.css';
+import './loader.css';
 import axios from 'axios'
-import {w3cwebsocket as W3CWebSocket} from 'websocket'
+import Socket from './socket'
 import Rules from './Rules'
 
 
@@ -13,18 +14,7 @@ class App extends Component {
             let pairSplit = pair.split('=');
             this.vars[pairSplit[0]] = pairSplit[1];
         });
-        this.socket = new W3CWebSocket("wss://kapust1n.ru:5000/ws");
-        this.socket.onopen = () => console.log("Соединение установлено.");
-        this.socket.onclose = event => {
-            if (event.wasClean) {
-                console.log('Соединение закрыто чисто');
-            } else {
-                console.log('Обрыв соединения');
-            }
-            console.log('Код: ' + event.code + ' причина: ' + event.reason);
-        };
-        this.socket.onmessage = event => console.log("Получены данные " + event.data);
-        this.socket.onerror = error => console.log("Ошибка " + error.message);
+        this.socket = Socket.getInstance();
         this.joinGame = this.joinGame.bind(this);
     }
 
