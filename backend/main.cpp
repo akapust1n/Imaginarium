@@ -44,6 +44,7 @@ int main()
                 }
             }
         });
+    crow::logger::setLogLevel(crow::LogLevel::Debug);
 
     app.port(5001).multithreaded().run();
 }

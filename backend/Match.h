@@ -1,6 +1,5 @@
 #ifndef MATCH_H
 #define MATCH_H
-#include "Player.h"
 #include <vector>
 
 class Match
@@ -11,7 +10,6 @@ public:
     bool isFull() const;
     void addPlayer(/*params*/);
 private:
-    std::vector<Player> players;
     const int maxSize ;
 };
 

@@ -14,7 +14,7 @@ Match::Match(int _maxSize):
 
 bool Match::isFull() const
 {
-    return players.size()==maxSize;
+    return true;
 }
 
 void Match::addPlayer()

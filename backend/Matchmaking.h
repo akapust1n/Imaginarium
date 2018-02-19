@@ -4,6 +4,11 @@
 #include "Player.h"
 #include <mutex>
 #include <unordered_map>
+#include <queue>
+
+using PlayerSP = std::shared_ptr<Player>;
+using PlayerWP = std::weak_ptr<Player>;
+
 
 class Matchmaking {
 public:
@@ -12,8 +17,9 @@ public:
     void addPlayer(crow::websocket::connection* conn);
 
 private:
-    std::vector<Match> matches;
-    std::unordered_map<crow::websocket::connection*, Player> players;
+    std::unordered_map<crow::websocket::connection*, PlayerSP> players;
+    std::queue<PlayerWP> queue;
+    std::unordered_map<crow::websocket::connection*, Match> matches;
 
     std::mutex find;
 
