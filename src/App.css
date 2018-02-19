@@ -1,5 +1,6 @@
 .App {
     text-align: center;
+    padding-top: 20pt;
 }
 
 .App-logo {
@@ -18,8 +19,20 @@
     font-size: 1.5em;
 }
 
-.App-intro {
-    font-size: large;
+.App-menu {
+    margin: auto;
+    width: 20%;
+}
+
+.App-menu-button {
+    margin-top: 20pt;
+}
+
+.App-rules {
+    margin-top: 20pt;
+    margin-left: -50%;
+    width: 200%;
+    text-align: justify;
 }
 
 @keyframes App-logo-spin {

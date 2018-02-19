@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './App.css';
 import axios from 'axios'
 import {w3cwebsocket as W3CWebSocket} from 'websocket'
+import Rules from './Rules'
 
 
 class App extends Component {
@@ -12,14 +13,9 @@ class App extends Component {
             let pairSplit = pair.split('=');
             this.vars[pairSplit[0]] = pairSplit[1];
         });
-        this.state = {
-            username: ''
-        };
         this.socket = new W3CWebSocket("wss://kapust1n.ru:5000/ws");
-        this.socket.onopen = function () {
-            console.log("Соединение установлено.");
-        };
-        this.socket.onclose = function (event) {
+        this.socket.onopen = () => console.log("Соединение установлено.");
+        this.socket.onclose = event => {
             if (event.wasClean) {
                 console.log('Соединение закрыто чисто');
             } else {
@@ -27,20 +23,21 @@ class App extends Component {
             }
             console.log('Код: ' + event.code + ' причина: ' + event.reason);
         };
-        this.socket.onmessage = function (event) {
-            console.log("Получены данные " + event.data);
-        };
-        this.socket.onerror = function (error) {
-            console.log("Ошибка " + error.message);
-        };
-        this.joinGame = this.joinGame.bind(this)
+        this.socket.onmessage = event => console.log("Получены данные " + event.data);
+        this.socket.onerror = error => console.log("Ошибка " + error.message);
+        this.joinGame = this.joinGame.bind(this);
     }
 
     render() {
         return (
             <div className="App">
-                <button className='button' onClick={this.joinGame}>Играть</button>
-                <p>{this.state.username}</p>
+                <h1>Удачи и веселой игры!</h1>
+                <div className='App-menu'>
+                    <button className='btn btn-primary btn-lg btn-block App-menu-button'
+                            onClick={this.joinGame}>Играть
+                    </button>
+                    <Rules/>
+                </div>
             </div>
         );
     }
