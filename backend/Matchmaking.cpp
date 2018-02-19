@@ -5,10 +5,10 @@ Matchmaking::Matchmaking()
 {
 }
 
-void Matchmaking::findMath(Player player)
+void Matchmaking::findMath(crow::websocket::connection& conn)
 {
     std::lock_guard<std::mutex> guard(find);
-    players.push_back(player);
+   // players.push_back(player);
 
     if (matches[matches.size() - 1].isFull())
         matches.emplace_back();
@@ -16,5 +16,5 @@ void Matchmaking::findMath(Player player)
 
 void Matchmaking::addPlayer(crow::websocket::connection* conn)
 {
-    players.emplace_back(conn);
+    //players.emplace_back(conn);
 }

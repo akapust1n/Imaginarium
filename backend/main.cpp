@@ -1,8 +1,6 @@
-#include "../3rd_part/md5/md5.h"
 #include "Matchmaking.h"
 #include "crow.h"
 #include "Parser.h"
-#include <nlohmann/json.hpp>
 
 
 
@@ -33,7 +31,16 @@ int main()
         })
         .onmessage([&](crow::websocket::connection& conn, const std::string& data, bool is_binary) {
             CROW_LOG_INFO << "connection message";
-            parser.getType(data);
+            std::string type =parser.getType(data);
+            if (type=="GameJoin"){
+                if (parser.checkNewPlayer(data)){
+              //  mk.findMath(crow::websocket::connection& conn);
+                    conn.send_text(parser.inQueue());
+                }
+                else{
+                    conn.send_text(parser.authError());
+                }
+            }
             conn.send_text(data);
         });
 
