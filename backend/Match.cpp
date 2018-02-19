@@ -1,7 +1,7 @@
 #include "Match.h"
 
 Match::Match():
-    maxSize(6)
+    maxSize(2)
 {
 
 }
@@ -17,7 +17,19 @@ bool Match::isFull() const
     return true;
 }
 
-void Match::addPlayer()
+void Match::addPlayer(PlayerSP player)
 {
+    players.push_back(player);
+}
 
+
+
+int Match::getMaxSize() const
+{
+    return maxSize;
+}
+
+std::vector<PlayerSP> &Match::getPlayers()
+{
+    return players;
 }

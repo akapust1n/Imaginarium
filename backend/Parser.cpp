@@ -53,3 +53,24 @@ std::string Parser::authError() const
     j["content"] = "AuthError";
     return j.dump();
 }
+
+std::string Parser::viewev_id(const std::string& data)
+{
+    json j_complete = json::parse(data);
+
+    std::string viewer_id = j_complete["content"]["viewer_id"];
+    return viewer_id;
+}
+
+std::string Parser::createMatch(std::vector<PlayerSP>& players)
+{
+    std::vector<std::string> viewers;
+    for (auto& player : players)
+        viewers.push_back(player->getViewer_id());
+
+    json j_vec(viewers);
+    json res;
+    res["type"] = "MasterTurn";
+    res["content"]["players"]= j_vec;
+    return res.dump();
+}

@@ -1,9 +1,15 @@
 var WebSocket = require('ws')
 
-var socket = new WebSocket("ws://localhost:5001/ws");
+var socket = new WebSocket("wss://kapust1n.ru:5000/ws");
 socket.onopen = function() {
   console.log("Соединение установлено.");
+   socket.send(JSON.stringify({
+   type : "GameJoin"
+}));
 };
+
+
+
 
 socket.onclose = function(event) {
   if (event.wasClean) {

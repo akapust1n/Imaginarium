@@ -24,11 +24,11 @@ int main()
         .websocket()
         .onopen([&](crow::websocket::connection& conn) {
             CROW_LOG_INFO << "new websocket connection";
-            mk.addPlayer(&conn );
 
         })
         .onclose([&](crow::websocket::connection& conn, const std::string& reason) {
             CROW_LOG_INFO << "websocket connection closed: " << reason;
+            mk.removePlayer(&conn);
 
         })
         .onmessage([&](crow::websocket::connection& conn, const std::string& data, bool is_binary) {
@@ -36,7 +36,7 @@ int main()
             std::string type =parser.getType(data);
             if (type=="GameJoin"){
                 if (parser.checkNewPlayer(data)){
-                    mk.findMath(&conn);
+                    mk.findMath(&conn, parser.viewev_id(data));
                     conn.send_text(parser.inQueue());
                 }
                 else{
@@ -44,7 +44,7 @@ int main()
                 }
             }
         });
-    crow::logger::setLogLevel(crow::LogLevel::Debug);
+    crow::logger::setLogLevel(crow::LogLevel::Info);
 
     app.port(5001).multithreaded().run();
 }
