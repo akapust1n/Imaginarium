@@ -1,6 +1,7 @@
 #include "Matchmaking.h"
 #include "crow.h"
 #include "Parser.h"
+#include "../3rd_part/md5/md5.h"
 
 
 
@@ -10,6 +11,7 @@ int main()
     crow::SimpleApp app;
     Matchmaking mk;
     Parser parser;
+    std::cout<<md5("a");
     CROW_ROUTE(app, "/")
     ([]() {
         crow::response res;
@@ -34,14 +36,13 @@ int main()
             std::string type =parser.getType(data);
             if (type=="GameJoin"){
                 if (parser.checkNewPlayer(data)){
-              //  mk.findMath(crow::websocket::connection& conn);
+                    mk.findMath(&conn);
                     conn.send_text(parser.inQueue());
                 }
                 else{
                     conn.send_text(parser.authError());
                 }
             }
-            conn.send_text(data);
         });
 
     app.port(5001).multithreaded().run();

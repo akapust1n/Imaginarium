@@ -5,7 +5,7 @@
 class Player {
 public:
     Player(crow::websocket::connection* _conn);
-    void* userdata() const;
+    crow::websocket::connection* getConn() const;
 
 private:
     int score;

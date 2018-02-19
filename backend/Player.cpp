@@ -7,7 +7,7 @@ Player::Player(crow::websocket::connection *_conn):
 
 }
 
-void *Player::userdata() const
+crow::websocket::connection *Player::getConn() const
 {
-    return conn->userdata();
+    return conn;
 }
