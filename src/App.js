@@ -5,6 +5,7 @@ import Loading from './Loading'
 import vars from './vars'
 import socket from './socket'
 import renderRoot from './director'
+import Game from "./Game";
 
 class App extends Component {
     constructor() {
@@ -20,10 +21,17 @@ class App extends Component {
                     <button className='btn btn-primary btn-lg btn-block App-menu-button'
                             onClick={App.joinGame}>Играть
                     </button>
+                    <button className='btn btn-primary btn-lg btn-block App-menu-button'
+                            onClick={App.renderGameScreen}>Экран игры
+                    </button>
                     <Rules/>
                 </div>
             </div>
         );
+    }
+
+    static renderGameScreen() {
+        renderRoot(<Game/>)
     }
 
     static joinGame() {
