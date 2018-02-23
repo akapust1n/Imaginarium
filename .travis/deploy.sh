@@ -9,7 +9,7 @@ ssh-add .travis/travis # Add the private key to SSH
 ssh -o "StrictHostKeyChecking no" apps@$IP -p $PORT <<EOF
   pwd
   cd $WDEPLOY_DIR
-  git reset --hard origin/backend
+  git reset --hard origin/backend~1 
   git pull  origin backend
   cd backend
   rm *.o Makefile
