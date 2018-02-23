@@ -36,13 +36,14 @@ int main()
             std::string type =parser.getType(data);
             if (type=="GameJoin"){
                 if (parser.checkNewPlayer(data)){
-                    mk.findMath(&conn, parser.viewev_id(data));
                     conn.send_text(parser.inQueue());
+                    mk.findMath(&conn, parser.viewev_id(data));
                 }
                 else{
                     conn.send_text(parser.authError());
                 }
             }
+
         });
     crow::logger::setLogLevel(crow::LogLevel::Info);
 

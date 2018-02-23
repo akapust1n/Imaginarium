@@ -5,7 +5,7 @@
 #include <set>
 
 CardHolder::CardHolder(std::string path)
-    : adress("http://kapust1n.ru:5000/cards/")
+    : adress("https://kapust1n.ru:5000/files/cards/")
 {
     const std::string target_path(path);
     if (boost::filesystem::exists(path)) {
@@ -47,16 +47,16 @@ std::vector<CardHolder::Card> CardHolder::getDeck(int num)
     if (numCards) {
         std::set<int> hash;
         int counter = 1;
-        while (counter != num) {
+        while (counter <= num) {
             int num = rand() % numCards;
             if (!hash.count(num)) {
                 counter++;
                 std::string path;
                 if (num < 10) {
-                    path = std::string(2, '0').append(adress + std::to_string(num) + ".jpg");
+                    path = adress +std::string(2, '0').append(std::to_string(num) + ".jpg");
                 } else {
                     if (num < 100) {
-                        path = std::string(1, '0').append(adress + std::to_string(num) + ".jpg");
+                        path = adress +std::string(1, '0').append(std::to_string(num) + ".jpg") ;
                     }
                     else {
                         path = (adress + std::to_string(num) + ".jpg");

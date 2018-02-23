@@ -82,15 +82,15 @@ std::vector<std::string> Parser::createMatch(Match& match)
     for (int i = 0; i < match.getMaxSize(); i++) {
 
         auto hand = match.getHandByPlayer(i);
-        json temp;
         for (auto& element : hand) {
+            json temp;
 
             temp["card_id"] = element.cardId;
             temp["card_url"] = element.cardUrl;
 
             resHand.push_back(temp);
         }
-        res["content"]["hand"] = temp;
+        res["content"]["hand"] = resHand;
         summury.push_back(res.dump());
     }
     return summury;

@@ -2,7 +2,7 @@
 #include "iostream"
 
 Matchmaking::Matchmaking()
-    : cardHolder("../../cards/")
+    : cardHolder("../../static/cards/")
 {
 }
 
@@ -58,11 +58,13 @@ void Matchmaking::removePlayer(crow::websocket::connection* conn)
 {
     players.erase(conn);
 }
+
 void Matchmaking::sendNotifyStartGame( Match& match)
 {
     std::vector<std::string> response = parser.createMatch(match);
     const std::vector<PlayerSP> & players = match.getPlayers();
     for (int i = 0; i < players.size(); i++) {
+        std::cout<<"\n Response\n"<<response[i];
         players[i]->getConn()->send_text(response[i]);
 
     }
