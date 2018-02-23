@@ -28,11 +28,12 @@ void Matchmaking::findMath(crow::websocket::connection* conn, const std::string 
             if (iterator->lock()) {
                 match.addPlayer(iterator->lock());
                 counter++;
-                iterator->lock()->getViewer_id();
-                std::cout << "\nCan lock pointer!\n";
+
+                std::cout<<"\nCan lock pointer!\n";
+                std::cout<<iterator->lock()->getViewer_id();
             }
             queue.erase(iterator);
-            iterator++;
+
         }
         if (counter < maxSize) {
             auto returningPlayers = match.getPlayers();
@@ -63,5 +64,6 @@ void Matchmaking::sendNotifyStartGame( Match& match)
     const std::vector<PlayerSP> & players = match.getPlayers();
     for (int i = 0; i < players.size(); i++) {
         players[i]->getConn()->send_text(response[i]);
+
     }
 }
