@@ -15,6 +15,7 @@ LIBS += \
        -lboost_chrono \
        -lboost_thread\
        -lboost_timer\
+       -lboost_regex\
        -lboost_coroutine \
        -lboost_filesystem \
 
@@ -23,7 +24,9 @@ SOURCES +=  main.cpp \
     Match.cpp \
     Player.cpp \
     ../3rd_part/md5/md5.cpp \
-    Parser.cpp
+    Parser.cpp \
+    MatchLogic.cpp \
+    CardHolder.cpp
 
 HEADERS += \
     Player.h \
@@ -31,7 +34,9 @@ HEADERS += \
     Match.h \
     Player.h \
     ../3rd_part/md5/md5.h \
-    Parser.h
+    Parser.h \
+    MatchLogic.h \
+    CardHolder.h
 
 DISTFILES += \
     ../3rd_part/md5/README.md

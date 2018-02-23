@@ -2,13 +2,15 @@
 #include "iostream"
 
 Matchmaking::Matchmaking()
+    : cardHolder("../../cards/")
 {
 }
 
 void Matchmaking::findMath(crow::websocket::connection* conn, const std::string viewer_id)
+
 {
-    std::cout<<"Try to find game"<<std::endl;
-    Match match(2);
+    std::cout << "Try to find game" << std::endl;
+    Match match(2, cardHolder);
     int maxSize = match.getMaxSize();
     players.insert({ conn, std::make_shared<Player>(conn, viewer_id) });
 
@@ -21,12 +23,13 @@ void Matchmaking::findMath(crow::websocket::connection* conn, const std::string 
         auto size = queue.size();
         int counter = 0;
 
-        for (int i = 0; i < size && counter < maxSize;  i++) {
-            std::cout<<"||Queue work...\n";
+        for (int i = 0; i < size && counter < maxSize; i++) {
+            std::cout << "||Queue work...\n";
             if (iterator->lock()) {
                 match.addPlayer(iterator->lock());
                 counter++;
-                std::cout<<"\nCan lock pointer!\n";
+                iterator->lock()->getViewer_id();
+                std::cout << "\nCan lock pointer!\n";
             }
             queue.erase(iterator);
             iterator++;
@@ -36,15 +39,16 @@ void Matchmaking::findMath(crow::websocket::connection* conn, const std::string 
             for (auto& player : returningPlayers) {
                 queue.push_back(player);
             }
-            std::cout<<"\n Cant find game!\n";
+            std::cout << "\n Cant find game!\n";
         } else {
-            std::cout<<"\nFind game!\n";
+            std::cout << "\nFind game!\n";
             auto gamers = match.getPlayers();
             for (auto& gamer : gamers) {
                 matches.insert({ gamer->getConn(), match });
             }
-            std::cout<<"\nNOTIFY\n";
-            sendNotifyStartGame(gamers);
+
+            std::cout << "\nMatch created!\n";
+            sendNotifyStartGame(match);
         }
     }
 }
@@ -53,10 +57,11 @@ void Matchmaking::removePlayer(crow::websocket::connection* conn)
 {
     players.erase(conn);
 }
-void Matchmaking::sendNotifyStartGame(std::vector<PlayerSP>& players)
+void Matchmaking::sendNotifyStartGame( Match& match)
 {
-    std::string response = parser.createMatch(players);
-    for (auto& player : players) {
-        player->getConn()->send_text(response);
+    std::vector<std::string> response = parser.createMatch(match);
+    const std::vector<PlayerSP> & players = match.getPlayers();
+    for (int i = 0; i < players.size(); i++) {
+        players[i]->getConn()->send_text(response[i]);
     }
 }

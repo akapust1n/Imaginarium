@@ -62,15 +62,36 @@ std::string Parser::viewev_id(const std::string& data)
     return viewer_id;
 }
 
-std::string Parser::createMatch(std::vector<PlayerSP>& players)
+//У КАЖДОГО ИГРОКА ИНДИВИДУАЛЬНАЯ РУКА
+std::vector<std::string> Parser::createMatch(Match& match)
 {
+    std::vector<std::string> summury;
     std::vector<std::string> viewers;
+    auto players = match.getPlayers();
     for (auto& player : players)
         viewers.push_back(player->getViewer_id());
 
     json j_vec(viewers);
     json res;
     res["type"] = "MasterTurn";
-    res["content"]["players"]= j_vec;
-    return res.dump();
+    res["content"]["players"] = j_vec;
+    res["content"]["master"] = match.getMaster();
+    res["content"]["deck"] = match.getDeckSize();
+
+    json resHand;
+    for (int i = 0; i < match.getMaxSize(); i++) {
+
+        auto hand = match.getHandByPlayer(i);
+        json temp;
+        for (auto& element : hand) {
+
+            temp["card_id"] = element.cardId;
+            temp["card_url"] = element.cardUrl;
+
+            resHand.push_back(temp);
+        }
+        res["content"]["hand"] = temp;
+        summury.push_back(res.dump());
+    }
+    return summury;
 }

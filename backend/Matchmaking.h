@@ -6,7 +6,8 @@
 #include <unordered_map>
 #include <vector>
 #include <Parser.h>
-
+#include <CardHolder.h>
+#include "MatchLogic.h"
 
 
 
@@ -17,7 +18,7 @@ public:
     void removePlayer(crow::websocket::connection* conn);
 
 private:
-    void sendNotifyStartGame(std::vector<PlayerSP> &players);
+    void sendNotifyStartGame(Match &match);
 private:
     std::unordered_map<crow::websocket::connection*, PlayerSP> players;
     std::vector<PlayerWP> queue;
@@ -25,7 +26,9 @@ private:
 
     std::mutex find;
     Parser parser;
-private:
+    CardHolder cardHolder;
+    MatchLogic mLogick;
+
 };
 
 #endif // MATCHMAKING_H

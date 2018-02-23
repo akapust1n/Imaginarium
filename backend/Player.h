@@ -1,6 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include <crow.h>
+#include "CardHolder.h"
 
 class Player {
 public:
@@ -9,10 +10,17 @@ public:
 
     std::string getViewer_id() const;
 
+    std::vector<CardHolder::Card> getHand() const;
+
+    void addCard(CardHolder::Card card);
+    bool removeCard(int id);
+
+
 private:
     int score;
     crow::websocket::connection* conn;
     const std::string viewer_id;
+    std::vector<CardHolder::Card> hand;
 };
 using PlayerSP = std::shared_ptr<Player>;
 using PlayerWP = std::weak_ptr<Player>;
