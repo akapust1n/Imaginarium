@@ -14,10 +14,7 @@ class Loading extends Component {
         this.setStatus = this.setStatus.bind(this);
         socket.setHandler('Error', content => this.setStatus(content));
         socket.setHandler('Queue', () => this.setStatus('Подбор игроков...'));
-        socket.setHandler('MasterTurn', content => {
-            let game = renderRoot(<Game/>);
-            game.initState(content);
-        });
+        socket.setHandler('MasterTurn', content => renderRoot(<Game data={content}/>));
     }
 
     render() {

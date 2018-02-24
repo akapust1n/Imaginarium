@@ -6,4 +6,3 @@ import renderRoot from './director'
 
 renderRoot(<App/>);
 registerServiceWorker();
-

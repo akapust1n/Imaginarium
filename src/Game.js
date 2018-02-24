@@ -7,13 +7,18 @@ import getNames from "./users";
 class Game extends Component {
     constructor() {
         super();
-        this.state = {
-            stage: 'MasterTurn',
-            association: ''
-        };
         socket.setHandler('MasterTurn', content => this.initState(content));
-        this.initState = this.initState.bind(this);
         this.commit = this.commit.bind(this);
+    }
+
+    componentWillMount() {
+        let data = this.props.data;
+        data.stage = 'MasterTurn';
+        data.association = '';
+        getNames(data.players);
+        data.selected = data.hand[0];
+        data.players.find((player) => player.viewer_id === vars.viewer_id).isViewer = true;
+        this.setState(data);
     }
 
     render() {
@@ -71,13 +76,6 @@ class Game extends Component {
                 </div>
             </div>
         );
-    }
-
-    initState(data) {
-        getNames(data.players);
-        data.selected = data.hand[0];
-        data.players.find((player) => player.viewer_id === vars.viewer_id).isViewer = true;
-        this.setState(data);
     }
 
     selectCard(card) {
