@@ -2,7 +2,7 @@ import vars from './vars'
 import fetchJsonp from 'fetch-jsonp'
 
 function getNames(users) {
-    // let ids = users.map(user => user.viewer_id);
+    let ids = users.map(user => user.viewer_id);
     // axios.get(`https://api.vk.com/method/users.get?access_token=${vars['access_token']}&user_ids=${ids}`).then(
     //     response => {
     //         for (let i = 0; i < users.length; i++) {
