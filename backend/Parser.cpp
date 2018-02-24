@@ -54,6 +54,14 @@ std::string Parser::authError() const
     return j.dump();
 }
 
+std::string Parser::association(MasterTurn masterTurn) const
+{
+    json j;
+    j["type"] = "Association";
+    j["content"] = masterTurn.association;
+    return j.dump();
+}
+
 std::string Parser::viewev_id(const std::string& data)
 {
     json j_complete = json::parse(data);
@@ -75,7 +83,7 @@ std::vector<std::string> Parser::createMatch(Match& match)
     json res;
     res["type"] = "MasterTurn";
     res["content"]["players"] = j_vec;
-    res["content"]["master"] = match.getMaster();
+    res["content"]["master"] = match.getMasterNum();
     res["content"]["deck"] = match.getDeckSize();
 
     json resHand;
@@ -94,4 +102,21 @@ std::vector<std::string> Parser::createMatch(Match& match)
         summury.push_back(res.dump());
     }
     return summury;
+}
+
+//TODO: сделать нормальную обработку ошибок
+Parser::MasterTurn Parser::getMasterTurn(const std::string &data)
+{
+    json j_complete = json::parse(data);
+    std::string card_id, association;
+    try {
+        card_id = j_complete["content"]["card_id"];
+        association = j_complete["content"]["association"];
+        return {card_id, association};
+
+    } catch (...) {
+        std::cout << "\nWrong json!\n";
+        return {};
+    }
+    return {};
 }

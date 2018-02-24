@@ -20,23 +20,21 @@ LIBS += \
        -lboost_filesystem \
 
 SOURCES +=  main.cpp \
-    Matchmaking.cpp \
     Match.cpp \
     Player.cpp \
     ../3rd_part/md5/md5.cpp \
     Parser.cpp \
-    MatchLogic.cpp \
-    CardHolder.cpp
+    CardHolder.cpp \
+    MatchLogic.cpp
 
 HEADERS += \
     Player.h \
-    Matchmaking.h \
     Match.h \
     Player.h \
     ../3rd_part/md5/md5.h \
     Parser.h \
-    MatchLogic.h \
-    CardHolder.h
+    CardHolder.h \
+    MatchLogic.h
 
 DISTFILES += \
     ../3rd_part/md5/README.md

@@ -1,15 +1,13 @@
 #ifndef MATCH_H
 #define MATCH_H
+#include "CardHolder.h"
 #include <Player.h>
 #include <vector>
-#include "CardHolder.h"
 
-class Match
-{
+class Match {
 public:
-
     Match();
-    Match(int _maxSize, CardHolder &cardHolder);
+    Match(int _maxSize, CardHolder& cardHolder);
     bool isFull() const;
     void addPlayer(PlayerSP player);
 
@@ -19,17 +17,20 @@ public:
 
     int getDeckSize() const;
 
-    int getMaster() const;
+    PlayerSP getMaster();
     void setMaster(int value);
-     std::vector<CardHolder::Card> getHandByPlayer(int id);
+    std::vector<CardHolder::Card> getHandByPlayer(int id);
+    int  getMasterNum() const;
+
+    std::string getMasterCard() const;
+    void setMasterCard(const std::string &value);
 
 private:
     std::vector<PlayerSP> players;
     const int maxSize;
     int master;
+    std::string masterCard;
     std::vector<CardHolder::Card> deck;
-
-
 };
 
 #endif // MATCH_H

@@ -15,12 +15,12 @@ public:
     void addCard(CardHolder::Card card);
     bool removeCard(int id);
 
-
 private:
     int score;
     crow::websocket::connection* conn;
     const std::string viewer_id;
     std::vector<CardHolder::Card> hand;
+
 };
 using PlayerSP = std::shared_ptr<Player>;
 using PlayerWP = std::weak_ptr<Player>;

@@ -1,15 +1,15 @@
-#include "Matchmaking.h"
+#include "MatchLogic.h"
 #include "crow.h"
 #include "Parser.h"
 #include "../3rd_part/md5/md5.h"
-
+//для корректной работы сервака  в ("../../static/cards/") должны лежать картинки
 
 
 int main()
 {
 
     crow::SimpleApp app;
-    Matchmaking mk;
+    MatchLogic mk;
     Parser parser;
     std::cout<<md5("a");
     CROW_ROUTE(app, "/")
@@ -42,6 +42,10 @@ int main()
                 else{
                     conn.send_text(parser.authError());
                 }
+            }
+            else if (type=="MasterTurn"){
+                  auto masterTurn =  parser.getMasterTurn(data);
+                  mk.masternTurn(&conn, masterTurn);
             }
 
         });

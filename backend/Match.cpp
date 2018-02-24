@@ -41,9 +41,24 @@ int Match::getDeckSize() const
     return deck.size();
 }
 
-int Match::getMaster() const
+PlayerSP Match::getMaster()
+{
+    return players[master];
+}
+
+int Match::getMasterNum() const
 {
     return master;
+}
+
+std::string Match::getMasterCard() const
+{
+    return masterCard;
+}
+
+void Match::setMasterCard(const std::string &value)
+{
+    masterCard = value;
 }
 
 void Match::setMaster(int value)
