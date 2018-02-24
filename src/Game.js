@@ -7,13 +7,13 @@ import getNames from "./users";
 class Game extends Component {
     constructor(props) {
         super(props);
-        socket.setHandler('MasterTurn', content => this.initState(content));
+        socket.setHandler('Association', content => this.initPlayerTurn(content));
         this.commit = this.commit.bind(this);
     }
 
     componentWillMount() {
         let data = this.props.data;
-        data.stage = 'MasterTurn';
+        data.isMasterTurn = true;
         data.association = '';
         getNames(data.players, players => this.setState({players: players}));
         data.selected = data.hand[0];
@@ -39,7 +39,7 @@ class Game extends Component {
                             </div>
                             <div className='col-6'>
                                 <div className='Game-timer'>
-                                    тут будет таймер
+
                                 </div>
                             </div>
                         </div>
@@ -69,7 +69,14 @@ class Game extends Component {
                                 </div>
                             </div>
                             <div className='col-2 center-content'>
-                                <button className='btn btn-primary' onClick={this.commit}>Выбрать</button>
+                                <button className='btn btn-primary'
+                                        onClick={this.commit}
+                                        hidden={
+                                            !((this.state.isMasterTurn && vars.viewer_id === this.state.master) ||
+                                                (!this.state.isMasterTurn && vars.viewer_id !== this.state.master))
+                                        }
+                                >Выбрать
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -78,22 +85,32 @@ class Game extends Component {
         );
     }
 
+    initPlayerTurn(association) {
+        this.setState({isMasterTurn: false, association: association});
+    }
+
     selectCard(card) {
         this.setState({selected: card})
     }
 
     commit() {
-        switch (this.state.stage) {
-            case 'MasterTurn':
-                let data = {
-                    'type': 'MasterTurn',
-                    'content': {
-                        'card_id': this.state.selected.card_id,
-                        'association': this.state.association
-                    }
-                };
-                console.log(JSON.stringify(data));
-                socket.send(JSON.stringify(data));
+        if (this.state.isMasterTurn) {
+            let data = {
+                'type': 'MasterTurn',
+                'content': {
+                    'card_id': this.state.selected.card_id,
+                    'association': this.state.association
+                }
+            };
+            console.log('sending', JSON.stringify(data));
+            socket.send(JSON.stringify(data));
+        } else {
+            let data = {
+                'type': 'PlayerTurn',
+                'content': this.state.selected.card_id
+            };
+            console.log('sending', JSON.stringify(data));
+            socket.send(JSON.stringify(data));
         }
     }
 
