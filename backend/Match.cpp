@@ -8,7 +8,6 @@ Match::Match()
 Match::Match(int _maxSize, CardHolder& cardHolder)
     : maxSize(_maxSize)
 {
-    master = rand() % maxSize;
     deck = cardHolder.getDeck(60);
 }
 
@@ -19,6 +18,9 @@ bool Match::isFull() const
 
 void Match::addPlayer(PlayerSP player)
 {
+   if (!players.size()){
+       master = player->getViewer_id();
+   }
     for (int i = 0; i < 6; i++) {
         player->addCard(deck.back());
         deck.pop_back();
@@ -43,10 +45,14 @@ int Match::getDeckSize() const
 
 PlayerSP Match::getMaster()
 {
-    return players[master];
+    for(int i=0;i<players.size();i++){
+        if(players[i]->getViewer_id()==master)
+            return players[i];
+    }
+    return nullptr;
 }
 
-int Match::getMasterNum() const
+std::string Match::getMasterNum() const
 {
     return master;
 }
@@ -61,7 +67,7 @@ void Match::setMasterCard(const std::string &value)
     masterCard = value;
 }
 
-void Match::setMaster(int value)
+void Match::setMaster(std::string value)
 {
     master = value;
 }

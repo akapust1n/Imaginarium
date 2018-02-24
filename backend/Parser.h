@@ -25,6 +25,7 @@ public:
     std::string inQueue() const;
     std::string authError() const;
     std::string association(MasterTurn masterTurn) const;
+    std::string getCardId (const std::string &data) const;
 
 };
 

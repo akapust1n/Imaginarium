@@ -62,6 +62,13 @@ std::string Parser::association(MasterTurn masterTurn) const
     return j.dump();
 }
 
+std::string Parser::getCardId(const std::string &data) const
+{
+   json j_complete = json::parse(data);
+   std::string res = j_complete["content"];
+   return res;
+}
+
 std::string Parser::viewev_id(const std::string& data)
 {
     json j_complete = json::parse(data);
@@ -74,20 +81,23 @@ std::string Parser::viewev_id(const std::string& data)
 std::vector<std::string> Parser::createMatch(Match& match)
 {
     std::vector<std::string> summury;
-    std::vector<std::string> viewers;
+    json viewers;
     auto players = match.getPlayers();
-    for (auto& player : players)
-        viewers.push_back(player->getViewer_id());
+    for (auto& player : players){
+        json temp;
+        temp["viewer_id"] =player->getViewer_id();
+        temp["score"] =player->getScore();
+        viewers.push_back(temp);
+    }
 
-    json j_vec(viewers);
     json res;
     res["type"] = "MasterTurn";
-    res["content"]["players"] = j_vec;
+    res["content"]["players"] = viewers;
     res["content"]["master"] = match.getMasterNum();
     res["content"]["deck"] = match.getDeckSize();
 
-    json resHand;
     for (int i = 0; i < match.getMaxSize(); i++) {
+        json resHand;
 
         auto hand = match.getHandByPlayer(i);
         for (auto& element : hand) {

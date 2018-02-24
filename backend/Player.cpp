@@ -38,3 +38,13 @@ bool Player::removeCard(int id)
     return false;
 }
 
+int Player::getScore() const
+{
+    return score;
+}
+
+void Player::setScore(int value)
+{
+    score = value;
+}
+

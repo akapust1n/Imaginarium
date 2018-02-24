@@ -47,7 +47,9 @@ int main()
                   auto masterTurn =  parser.getMasterTurn(data);
                   mk.masternTurn(&conn, masterTurn);
             }
-
+            else if (type=="PlayerTurn"){
+                std::string cardId =parser.getCardId(data);
+            }
         });
     crow::logger::setLogLevel(crow::LogLevel::Info);
 

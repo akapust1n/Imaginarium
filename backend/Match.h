@@ -18,9 +18,9 @@ public:
     int getDeckSize() const;
 
     PlayerSP getMaster();
-    void setMaster(int value);
+    void setMaster(std::string value);
     std::vector<CardHolder::Card> getHandByPlayer(int id);
-    int  getMasterNum() const;
+    std::string getMasterNum() const;
 
     std::string getMasterCard() const;
     void setMasterCard(const std::string &value);
@@ -28,7 +28,7 @@ public:
 private:
     std::vector<PlayerSP> players;
     const int maxSize;
-    int master;
+    std::string master;
     std::string masterCard;
     std::vector<CardHolder::Card> deck;
 };

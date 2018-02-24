@@ -63,11 +63,11 @@ void MatchLogic::masternTurn(crow::websocket::connection* conn, Parser::MasterTu
 {
     Match &match  = matches[conn];
     match.setMasterCard(data.cardId);
-    int num = match.getMasterNum();
+    std::string master = match.getMasterNum();
     auto player = match.getPlayers();
     std::string response = parser.association(data);
     for(int i=0;i<match.getMaxSize();i++){
-        if(i!=num)
+        if(player[i]->getViewer_id()!=master)
             player[i]->getConn()->send_text(response);
     }
 }

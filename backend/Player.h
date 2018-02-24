@@ -15,6 +15,9 @@ public:
     void addCard(CardHolder::Card card);
     bool removeCard(int id);
 
+    int getScore() const;
+    void setScore(int value);
+
 private:
     int score;
     crow::websocket::connection* conn;
