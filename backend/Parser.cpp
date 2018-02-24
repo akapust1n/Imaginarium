@@ -62,11 +62,31 @@ std::string Parser::association(MasterTurn masterTurn) const
     return j.dump();
 }
 
-std::string Parser::getCardId(const std::string &data) const
+std::string Parser::getCardId(const std::string& data) const
 {
-   json j_complete = json::parse(data);
-   std::string res = j_complete["content"];
-   return res;
+    json j_complete = json::parse(data);
+    std::string res = j_complete["content"];
+    return res;
+}
+
+std::string Parser::cardsOnBoard(PlayerSP& player, std::vector<CardHolder::Card>& dropedCards) const
+{
+    json j_complete;
+    j_complete["type"] = "CardsOnBoard";
+    json j_array;
+    for (auto& card : dropedCards) {
+        json temp;
+        CardHolder::Card dropedCard = player->getDropedCard();
+        if (dropedCard.cardId = card.cardId)
+            temp["isOwn"] = true;
+        else
+            temp["isOwn"] = false;
+        temp["card_id"] = card.cardId;
+        temp["card_url"] = card.cardUrl;
+        j_array.push_back(temp);
+    }
+    j_complete["content"] = j_array;
+    return j_complete.dump();
 }
 
 std::string Parser::viewev_id(const std::string& data)
@@ -83,10 +103,10 @@ std::vector<std::string> Parser::createMatch(Match& match)
     std::vector<std::string> summury;
     json viewers;
     auto players = match.getPlayers();
-    for (auto& player : players){
+    for (auto& player : players) {
         json temp;
-        temp["viewer_id"] =player->getViewer_id();
-        temp["score"] =player->getScore();
+        temp["viewer_id"] = player->getViewer_id();
+        temp["score"] = player->getScore();
         viewers.push_back(temp);
     }
 
@@ -115,14 +135,14 @@ std::vector<std::string> Parser::createMatch(Match& match)
 }
 
 //TODO: сделать нормальную обработку ошибок
-Parser::MasterTurn Parser::getMasterTurn(const std::string &data)
+Parser::MasterTurn Parser::getMasterTurn(const std::string& data)
 {
     json j_complete = json::parse(data);
     std::string card_id, association;
     try {
         card_id = j_complete["content"]["card_id"];
         association = j_complete["content"]["association"];
-        return {card_id, association};
+        return { card_id, association };
 
     } catch (...) {
         std::cout << "\nWrong json!\n";

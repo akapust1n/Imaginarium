@@ -1,25 +1,25 @@
 #ifndef MATCHMAKING_H
 #define MATCHMAKING_H
 #include "Match.h"
+#include "MatchLogic.h"
 #include "Player.h"
+#include <CardHolder.h>
+#include <Parser.h>
 #include <mutex>
 #include <unordered_map>
 #include <vector>
-#include <Parser.h>
-#include <CardHolder.h>
-#include "MatchLogic.h"
-
-
 
 class MatchLogic {
 public:
     MatchLogic();
-    void findMath(crow::websocket::connection *conn, const std::string viewer_id);
+    void findMath(crow::websocket::connection* conn, const std::string viewer_id);
     void removePlayer(crow::websocket::connection* conn);
-    void masternTurn(crow::websocket::connection *conn, Parser::MasterTurn data);
+    void masternTurn(crow::websocket::connection* conn, Parser::MasterTurn data);
+    void dropCard(crow::websocket::connection* conn, const std::string cardId);
 
 private:
-    void sendNotifyStartGame(Match &match);
+    void sendNotifyStartGame(Match& match);
+
 private:
     std::unordered_map<crow::websocket::connection*, PlayerSP> players;
     std::vector<PlayerWP> queue;
@@ -28,7 +28,6 @@ private:
     std::mutex find;
     Parser parser;
     CardHolder cardHolder;
-
 };
 
 #endif // MATCHMAKING_H

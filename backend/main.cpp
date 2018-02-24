@@ -49,6 +49,7 @@ int main()
             }
             else if (type=="PlayerTurn"){
                 std::string cardId =parser.getCardId(data);
+                mk.dropCard(&conn, cardId);
             }
         });
     crow::logger::setLogLevel(crow::LogLevel::Info);

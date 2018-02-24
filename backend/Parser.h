@@ -26,6 +26,7 @@ public:
     std::string authError() const;
     std::string association(MasterTurn masterTurn) const;
     std::string getCardId (const std::string &data) const;
+    std::string cardsOnBoard(PlayerSP &player, std::vector<CardHolder::Card> &dropedCards) const;
 
 };
 

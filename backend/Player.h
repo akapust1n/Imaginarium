@@ -13,16 +13,24 @@ public:
     std::vector<CardHolder::Card> getHand() const;
 
     void addCard(CardHolder::Card card);
-    bool removeCard(int id);
+    bool dropCard(int id);
 
     int getScore() const;
     void setScore(int value);
 
+    bool getIsMaster() const;
+    void setIsMaster(bool value);
+
+    CardHolder::Card getDropedCard() const;
+    void setDropedCard(const CardHolder::Card &value);
+
 private:
     int score;
     crow::websocket::connection* conn;
+    bool isMaster;
     const std::string viewer_id;
     std::vector<CardHolder::Card> hand;
+    CardHolder::Card dropedCard;
 
 };
 using PlayerSP = std::shared_ptr<Player>;

@@ -29,11 +29,10 @@ void MatchLogic::findMath(crow::websocket::connection* conn, const std::string v
                 match.addPlayer(iterator->lock());
                 counter++;
 
-                std::cout<<"\nCan lock pointer!\n";
-                std::cout<<iterator->lock()->getViewer_id();
+                std::cout << "\nCan lock pointer!\n";
+                std::cout << iterator->lock()->getViewer_id();
             }
             queue.erase(iterator);
-
         }
         if (counter < maxSize) {
             auto returningPlayers = match.getPlayers();
@@ -43,9 +42,10 @@ void MatchLogic::findMath(crow::websocket::connection* conn, const std::string v
             std::cout << "\n Cant find game!\n";
         } else {
             std::cout << "\nFind game!\n";
-            auto gamers = match.getPlayers();
-            for (auto& gamer : gamers) {
-                matches.insert({ gamer->getConn(), match });
+
+            std::vector<PlayerSP> gamers = match.getPlayers();
+            for (int i = 0; i < gamers.size(); i++) {
+                matches.insert(std::make_pair(gamers[i]->getConn(), match ));
             }
 
             std::cout << "\nMatch created!\n";
@@ -61,24 +61,42 @@ void MatchLogic::removePlayer(crow::websocket::connection* conn)
 
 void MatchLogic::masternTurn(crow::websocket::connection* conn, Parser::MasterTurn data)
 {
-    Match &match  = matches[conn];
+    Match& match = matches[conn];
     match.setMasterCard(data.cardId);
     std::string master = match.getMasterNum();
     auto player = match.getPlayers();
     std::string response = parser.association(data);
-    for(int i=0;i<match.getMaxSize();i++){
-        if(player[i]->getViewer_id()!=master)
+    for (int i = 0; i < match.getMaxSize(); i++) {
+        if (player[i]->getViewer_id() != master)
             player[i]->getConn()->send_text(response);
     }
 }
 
-void MatchLogic::sendNotifyStartGame( Match& match)
+void MatchLogic::dropCard(crow::websocket::connection* conn, const std::string cardId)
+{
+    //TODO: если отключится игрок, то всё плохо
+    Match& match = matches[conn];
+    if (match.dropCard(cardId, players[conn])) {
+        auto gamers = match.getPlayers();
+        std::vector<CardHolder::Card> dropedCards;
+        for (int i = 0; i < gamers.size(); i++) {
+            dropedCards.push_back(gamers[i]->getDropedCard());
+        }
+
+        for (int i = 0; i < gamers.size(); i++) {
+            std::string response = parser.cardsOnBoard(gamers[i], dropedCards);
+            gamers[i]->getConn()->send_text(response);
+        }
+    };
+}
+
+void MatchLogic::sendNotifyStartGame(Match& match)
 {
     std::vector<std::string> response = parser.createMatch(match);
-    const std::vector<PlayerSP> & players = match.getPlayers();
+    const std::vector<PlayerSP>& players = match.getPlayers();
     for (int i = 0; i < players.size(); i++) {
-        std::cout<<"\n Response\n"<<response[i];
+        std::cout << "\n Response\n"
+                  << response[i];
         players[i]->getConn()->send_text(response[i]);
-
     }
 }

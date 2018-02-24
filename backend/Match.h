@@ -3,6 +3,7 @@
 #include "CardHolder.h"
 #include <Player.h>
 #include <vector>
+#include <mutex>
 
 class Match {
 public:
@@ -24,6 +25,9 @@ public:
 
     std::string getMasterCard() const;
     void setMasterCard(const std::string &value);
+    bool dropCard(std::string cardId, PlayerSP player);
+
+    int getDropedCards() const;
 
 private:
     std::vector<PlayerSP> players;
@@ -31,6 +35,8 @@ private:
     std::string master;
     std::string masterCard;
     std::vector<CardHolder::Card> deck;
+    int dropedCards;
+    std::mutex dropMutex;
 };
 
 #endif // MATCH_H

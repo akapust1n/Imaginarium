@@ -4,6 +4,7 @@ Player::Player(crow::websocket::connection* _conn, const std::string _viewer_id)
     : score(0)
     , conn(_conn)
     , viewer_id(_viewer_id)
+    , isMaster(false)
 {
 }
 
@@ -27,10 +28,12 @@ void Player::addCard(CardHolder::Card card)
     hand.push_back(card);
 }
 
-bool Player::removeCard(int id)
+bool Player::dropCard(int id)
 {
     for (int i = 0; i < hand.size(); i++) {
         if (hand[i].cardId == id) {
+            dropedCard.cardId = hand[i].cardId;
+            dropedCard.cardUrl = hand[i].cardUrl;
             hand.erase(hand.begin() + i);
             return true;
         }
@@ -46,5 +49,25 @@ int Player::getScore() const
 void Player::setScore(int value)
 {
     score = value;
+}
+
+bool Player::getIsMaster() const
+{
+    return isMaster;
+}
+
+void Player::setIsMaster(bool value)
+{
+    isMaster = value;
+}
+
+CardHolder::Card Player::getDropedCard() const
+{
+    return dropedCard;
+}
+
+void Player::setDropedCard(const CardHolder::Card &value)
+{
+    dropedCard = value;
 }
 
