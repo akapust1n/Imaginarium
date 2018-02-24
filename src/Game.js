@@ -5,8 +5,8 @@ import vars from './vars'
 import getNames from "./users";
 
 class Game extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         socket.setHandler('MasterTurn', content => this.initState(content));
         this.commit = this.commit.bind(this);
     }
@@ -46,7 +46,7 @@ class Game extends Component {
                         <div className='row'>
                             <div className='col-12'>
                                 <Association isMaster={vars.viewer_id === this.state.master}
-                                             association={this.state.association}/>
+                                             game={this}/>
                             </div>
                         </div>
                     </div>
@@ -96,47 +96,70 @@ class Game extends Component {
                 socket.send(JSON.stringify(data));
         }
     }
+
+    setAssociation(association) {
+        this.setState({association: association})
+    }
 }
 
-function PlayerListItem(props) {
-    let player = props.player;
-    let master = props.master;
-    if (player.isViewer && player.viewer_id === master) {
-        return (<li><b><u>{player.name}</u></b> - {player.score}</li>);
+class PlayerListItem extends Component {
+    render() {
+        let player = this.props.player;
+        let master = this.props.master;
+        if (player.isViewer && player.viewer_id === master) {
+            return (<li><b><u>{player.name}</u></b> - {player.score}</li>);
+        }
+        if (player.isViewer) {
+            return (<li><b>{player.name}</b> - {player.score}</li>);
+        }
+        if (player.viewer_id === master) {
+            return (<li><u>{player.name}</u> - {player.score}</li>);
+        }
+        return (<li>{player.name} - {player.score}</li>);
     }
-    if (player.isViewer) {
-        return (<li><b>{player.name}</b> - {player.score}</li>);
-    }
-    if (player.viewer_id === master) {
-        return (<li><u>{player.name}</u> - {player.score}</li>);
-    }
-    return (<li>{player.name} - {player.score}</li>);
 }
 
-function PlayerList(props) {
-    let listItems = props.players.map((player) =>
-        <PlayerListItem key={player.viewer_id} player={player} master={props.master}/>);
-    return (<ul className={'Game-players'}>{listItems}</ul>);
+class PlayerList extends Component {
+    render() {
+        let listItems = this.props.players.map((player) =>
+            <PlayerListItem key={player.viewer_id} player={player} master={this.props.master}/>);
+        return (<ul className={'Game-players'}>{listItems}</ul>);
+    }
 }
 
-function Association(props) {
-    let isMaster = props.isMaster;
-    let association = props.association;
-    if (association) {
-        return (
-            <div className='Game-association'>
-                Ассоциация:<br/>{association}
-            </div>
-        );
+class Association extends Component {
+    constructor(props) {
+        super(props);
+        this.handleChange = this.handleChange.bind(this);
     }
-    if (isMaster) {
-        return (
-            <div className='form-group'>
-                <textarea className='Game-association-input form-control' rows="3" placeholder='Ассоциация'></textarea>
-            </div>
-        );
+
+    render() {
+        let isMaster = this.props.isMaster;
+        let association = this.props.association;
+        if (association) {
+            return (
+                <div className='Game-association'>
+                    Ассоциация:<br/>{association}
+                </div>
+            );
+        }
+        if (isMaster) {
+            return (
+                <div className='form-group'>
+                    <textarea className='Game-association-input form-control'
+                              rows="3"
+                              placeholder='Ассоциация'
+                              onChange={this.handleChange}
+                    />
+                </div>
+            );
+        }
+        return (<p className='Game-association'>Ведущий придумывает ассоциацию</p>);
     }
-    return (<p className='Game-association'>Ведущий придумывает ассоциацию</p>);
+
+    handleChange(event) {
+        this.props.game.setAssociation(event.target.value);
+    }
 }
 
 export default Game;
