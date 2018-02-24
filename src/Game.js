@@ -11,7 +11,6 @@ class Game extends Component {
             stage: 'MasterTurn',
             association: ''
         };
-        this.state.players.find((player) => player.viewer_id === vars.viewer_id).isViewer = true;
         socket.setHandler('MasterTurn', content => this.initState(content));
         this.initState = this.initState.bind(this);
         this.commit = this.commit.bind(this);
