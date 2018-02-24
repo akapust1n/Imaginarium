@@ -15,7 +15,7 @@ class Game extends Component {
         let data = this.props.data;
         data.stage = 'MasterTurn';
         data.association = '';
-        getNames(data.players);
+        getNames(data.players, players => this.setState({players: players}));
         data.selected = data.hand[0];
         data.players.find((player) => player.viewer_id === vars.viewer_id).isViewer = true;
         this.setState(data);
