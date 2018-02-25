@@ -9,6 +9,7 @@ class Match {
 public:
     Match();
     Match(int _maxSize, CardHolder& cardHolder);
+    //Match (Match&& a);
     bool isFull() const;
     void addPlayer(PlayerSP player);
 
@@ -36,7 +37,7 @@ private:
     std::string masterCard;
     std::vector<CardHolder::Card> deck;
     int dropedCards;
-    std::mutex dropMutex;
+    std::shared_ptr<std::mutex> dropMutex;
 };
-
+using MatchSP = std::shared_ptr<Match>;
 #endif // MATCH_H

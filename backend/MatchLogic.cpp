@@ -7,11 +7,11 @@ MatchLogic::MatchLogic()
 }
 
 void MatchLogic::findMath(crow::websocket::connection* conn, const std::string viewer_id)
-
 {
+
     std::cout << "Try to find game" << std::endl;
-    Match match(2, cardHolder);
-    int maxSize = match.getMaxSize();
+    MatchSP match = std::make_unique<Match>(2, cardHolder);
+    int maxSize = match->getMaxSize();
     players.insert({ conn, std::make_shared<Player>(conn, viewer_id) });
 
     std::lock_guard<std::mutex> guard(find);
@@ -26,7 +26,7 @@ void MatchLogic::findMath(crow::websocket::connection* conn, const std::string v
         for (int i = 0; i < size && counter < maxSize; i++) {
             std::cout << "||Queue work...\n";
             if (iterator->lock()) {
-                match.addPlayer(iterator->lock());
+                match->addPlayer(iterator->lock());
                 counter++;
 
                 std::cout << "\nCan lock pointer!\n";
@@ -35,7 +35,7 @@ void MatchLogic::findMath(crow::websocket::connection* conn, const std::string v
             queue.erase(iterator);
         }
         if (counter < maxSize) {
-            auto returningPlayers = match.getPlayers();
+            auto returningPlayers = match->getPlayers();
             for (auto& player : returningPlayers) {
                 queue.push_back(player);
             }
@@ -43,9 +43,9 @@ void MatchLogic::findMath(crow::websocket::connection* conn, const std::string v
         } else {
             std::cout << "\nFind game!\n";
 
-            std::vector<PlayerSP> gamers = match.getPlayers();
+            std::vector<PlayerSP> gamers = match->getPlayers();
             for (int i = 0; i < gamers.size(); i++) {
-                matches.insert(std::make_pair(gamers[i]->getConn(), match ));
+                matches[gamers[i]->getConn()] = match;
             }
 
             std::cout << "\nMatch created!\n";
@@ -61,12 +61,12 @@ void MatchLogic::removePlayer(crow::websocket::connection* conn)
 
 void MatchLogic::masternTurn(crow::websocket::connection* conn, Parser::MasterTurn data)
 {
-    Match& match = matches[conn];
-    match.setMasterCard(data.cardId);
-    std::string master = match.getMasterNum();
-    auto player = match.getPlayers();
+    auto match = matches[conn];
+    match->setMasterCard(data.cardId);
+    std::string master = match->getMasterNum();
+    auto player = match->getPlayers();
     std::string response = parser.association(data);
-    for (int i = 0; i < match.getMaxSize(); i++) {
+    for (int i = 0; i < match->getMaxSize(); i++) {
         if (player[i]->getViewer_id() != master)
             player[i]->getConn()->send_text(response);
     }
@@ -75,9 +75,9 @@ void MatchLogic::masternTurn(crow::websocket::connection* conn, Parser::MasterTu
 void MatchLogic::dropCard(crow::websocket::connection* conn, const std::string cardId)
 {
     //TODO: если отключится игрок, то всё плохо
-    Match& match = matches[conn];
-    if (match.dropCard(cardId, players[conn])) {
-        auto gamers = match.getPlayers();
+    auto match = matches[conn];
+    if (match->dropCard(cardId, players[conn])) {
+        auto gamers = match->getPlayers();
         std::vector<CardHolder::Card> dropedCards;
         for (int i = 0; i < gamers.size(); i++) {
             dropedCards.push_back(gamers[i]->getDropedCard());
@@ -90,10 +90,10 @@ void MatchLogic::dropCard(crow::websocket::connection* conn, const std::string c
     };
 }
 
-void MatchLogic::sendNotifyStartGame(Match& match)
+void MatchLogic::sendNotifyStartGame(MatchSP& match)
 {
     std::vector<std::string> response = parser.createMatch(match);
-    const std::vector<PlayerSP>& players = match.getPlayers();
+    const std::vector<PlayerSP>& players = match->getPlayers();
     for (int i = 0; i < players.size(); i++) {
         std::cout << "\n Response\n"
                   << response[i];

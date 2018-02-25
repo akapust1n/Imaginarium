@@ -6,7 +6,7 @@
 class Player {
 public:
     Player(crow::websocket::connection* _conn, const std::string _viewer_id);
-    crow::websocket::connection* getConn() const;
+    crow::websocket::connection* getConn();
 
     std::string getViewer_id() const;
 

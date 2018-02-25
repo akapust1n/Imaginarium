@@ -8,7 +8,7 @@ Player::Player(crow::websocket::connection* _conn, const std::string _viewer_id)
 {
 }
 
-crow::websocket::connection* Player::getConn() const
+crow::websocket::connection* Player::getConn()
 {
     return conn;
 }

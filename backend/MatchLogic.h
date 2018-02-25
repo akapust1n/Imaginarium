@@ -18,12 +18,12 @@ public:
     void dropCard(crow::websocket::connection* conn, const std::string cardId);
 
 private:
-    void sendNotifyStartGame(Match& match);
+    void sendNotifyStartGame(MatchSP &match);
 
 private:
     std::unordered_map<crow::websocket::connection*, PlayerSP> players;
     std::vector<PlayerWP> queue;
-    std::unordered_map<crow::websocket::connection*, Match> matches;
+    std::unordered_map<crow::websocket::connection*, MatchSP> matches;
 
     std::mutex find;
     Parser parser;

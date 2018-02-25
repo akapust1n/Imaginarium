@@ -12,6 +12,12 @@ Match::Match(int _maxSize, CardHolder& cardHolder)
     deck = cardHolder.getDeck(60);
 }
 
+//Match::Match(Match &&a):
+//    maxSize(a.maxSize)
+//{
+//   dropMutex = std::move(a.dropMutex);
+//}
+
 bool Match::isFull() const
 {
     return true;
@@ -73,14 +79,16 @@ bool Match::dropCard(std::string cardId, PlayerSP player)
 {
     //может сразу парсить в инт?
     if (player->dropCard(std::stoi(cardId))) {
-        std::lock_guard<std::mutex> lock(dropMutex);
+        dropMutex.get()->lock();
         dropedCards++;
 
         if (dropedCards == maxSize - 1) {
             dropedCards = 0;
+            dropMutex.get()->unlock();
             return true;
-        } else
-            return false;
+        } else{
+            dropMutex.get()->unlock();
+            return false;}
     }
 }
 
