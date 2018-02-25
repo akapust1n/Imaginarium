@@ -18,6 +18,7 @@ LIBS += \
        -lboost_regex\
        -lboost_coroutine \
        -lboost_filesystem \
+       -lboost_iostreams \
 
 SOURCES +=  main.cpp \
     Match.cpp \

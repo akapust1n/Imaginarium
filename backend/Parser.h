@@ -11,7 +11,7 @@ class Parser
 public:
     struct  MasterTurn
     {
-        std::string cardId;
+        int cardId;
         std::string association;
     };
 public:
@@ -25,7 +25,7 @@ public:
     std::string inQueue() const;
     std::string authError() const;
     std::string association(MasterTurn masterTurn) const;
-    std::string getCardId (const std::string &data) const;
+    int getCardId(const std::string &data) const;
     std::string cardsOnBoard(PlayerSP &player, std::vector<CardHolder::Card> &dropedCards) const;
 
 };

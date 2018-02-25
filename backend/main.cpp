@@ -48,7 +48,7 @@ int main()
                   mk.masternTurn(&conn, masterTurn);
             }
             else if (type=="PlayerTurn"){
-                std::string cardId =parser.getCardId(data);
+                int cardId =parser.getCardId(data);
                 mk.dropCard(&conn, cardId);
             }
         });

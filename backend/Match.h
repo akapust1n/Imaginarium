@@ -24,9 +24,9 @@ public:
     std::vector<CardHolder::Card> getHandByPlayer(int id);
     std::string getMasterNum() const;
 
-    std::string getMasterCard() const;
-    void setMasterCard(const std::string &value);
-    bool dropCard(std::string cardId, PlayerSP player);
+    int getMasterCard() const;
+    void setMasterCard(const int &value);
+    bool dropCard(int cardId, PlayerSP player);
 
     int getDropedCards() const;
 
@@ -34,7 +34,7 @@ private:
     std::vector<PlayerSP> players;
     const int maxSize;
     std::string master;
-    std::string masterCard;
+    int masterCard;
     std::vector<CardHolder::Card> deck;
     int dropedCards;
     std::shared_ptr<std::mutex> dropMutex;

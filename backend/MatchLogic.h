@@ -15,7 +15,7 @@ public:
     void findMath(crow::websocket::connection* conn, const std::string viewer_id);
     void removePlayer(crow::websocket::connection* conn);
     void masternTurn(crow::websocket::connection* conn, Parser::MasterTurn data);
-    void dropCard(crow::websocket::connection* conn, const std::string cardId);
+    void dropCard(crow::websocket::connection* conn, int cardId);
 
 private:
     void sendNotifyStartGame(MatchSP &match);

@@ -9,6 +9,7 @@ Match::Match(int _maxSize, CardHolder& cardHolder)
     : maxSize(_maxSize)
     , dropedCards()
 {
+    dropMutex.reset(new std::mutex());
     deck = cardHolder.getDeck(60);
 }
 
@@ -65,29 +66,28 @@ std::string Match::getMasterNum() const
     return master;
 }
 
-std::string Match::getMasterCard() const
+int Match::getMasterCard() const
 {
     return masterCard;
 }
 
-void Match::setMasterCard(const std::string& value)
+void Match::setMasterCard(const int &value)
 {
     masterCard = value;
 }
 
-bool Match::dropCard(std::string cardId, PlayerSP player)
+bool Match::dropCard(int cardId, PlayerSP player)
 {
-    //может сразу парсить в инт?
-    if (player->dropCard(std::stoi(cardId))) {
-        dropMutex.get()->lock();
+    if (player->dropCard(cardId)) {
+        dropMutex->lock();
         dropedCards++;
 
         if (dropedCards == maxSize - 1) {
             dropedCards = 0;
-            dropMutex.get()->unlock();
+            dropMutex->unlock();
             return true;
         } else{
-            dropMutex.get()->unlock();
+            dropMutex->unlock();
             return false;}
     }
 }

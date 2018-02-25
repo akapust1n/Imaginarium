@@ -62,10 +62,11 @@ std::string Parser::association(MasterTurn masterTurn) const
     return j.dump();
 }
 
-std::string Parser::getCardId(const std::string& data) const
+int Parser::getCardId(const std::string& data) const
 {
+    std::cout<<"\n PlayerTurn:" <<data<<std::endl;
     json j_complete = json::parse(data);
-    std::string res = j_complete["content"];
+    int res = j_complete["content"];
     return res;
 }
 
@@ -77,7 +78,7 @@ std::string Parser::cardsOnBoard(PlayerSP& player, std::vector<CardHolder::Card>
     for (auto& card : dropedCards) {
         json temp;
         CardHolder::Card dropedCard = player->getDropedCard();
-        if (dropedCard.cardId = card.cardId)
+        if (dropedCard.cardId == card.cardId)
             temp["isOwn"] = true;
         else
             temp["isOwn"] = false;
@@ -139,10 +140,10 @@ Parser::MasterTurn Parser::getMasterTurn(const std::string& data)
 {
     std::cout<<"\nMasterTurn_"<<data<<std::endl;
     json j_complete = json::parse(data);
-    std::string card_id, association;
+    std::string  association;
+    int card_id;
     try {
-        int card_id_int = j_complete["content"]["card_id"];
-        card_id =  std::to_string(card_id_int);
+        card_id =  j_complete["content"]["card_id"];
         association = j_complete["content"]["association"];
         return { card_id, association };
 
