@@ -17,7 +17,7 @@ bool Parser::checkNewPlayer(const std::string& data)
         api_id = j_complete["content"]["api_id"];
         auth_key = j_complete["content"]["auth_key"];
     } catch (...) {
-        std::cout << "\nWrong json!\n";
+        std::cout << "\nWrong json! checknewPlayer\n";
         return false;
     }
 
@@ -137,15 +137,17 @@ std::vector<std::string> Parser::createMatch(MatchSP& match)
 //TODO: сделать нормальную обработку ошибок
 Parser::MasterTurn Parser::getMasterTurn(const std::string& data)
 {
+    std::cout<<"\nMasterTurn_"<<data<<std::endl;
     json j_complete = json::parse(data);
     std::string card_id, association;
     try {
-        card_id = j_complete["content"]["card_id"];
+        int card_id_int = j_complete["content"]["card_id"];
+        card_id =  std::to_string(card_id_int);
         association = j_complete["content"]["association"];
         return { card_id, association };
 
     } catch (...) {
-        std::cout << "\nWrong json!\n";
+        std::cout << "\nWrong json! getMasterTurn\n";
         return {};
     }
     return {};
