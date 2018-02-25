@@ -49,8 +49,11 @@ class Game extends Component {
                         </div>
                         <div className='row'>
                             <div className='col-12'>
-                                <Association isMaster={vars.viewer_id === this.state.master}
-                                             game={this}/>
+                                <Association
+                                    game={this}
+                                    isMasterTurn={this.state.isMasterTurn}
+                                    isMaster={vars.viewer_id === this.state.master}
+                                />
                             </div>
                         </div>
                     </div>
@@ -159,16 +162,9 @@ class Association extends Component {
     }
 
     render() {
+        let isMasterTurn = this.props.isMasterTurn;
         let isMaster = this.props.isMaster;
-        let association = this.props.association;
-        if (association) {
-            return (
-                <div className='Game-association'>
-                    Ассоциация:<br/>{association}
-                </div>
-            );
-        }
-        if (isMaster) {
+        if (isMasterTurn && isMaster) {
             return (
                 <div className='form-group'>
                     <textarea className='Game-association-input form-control'
@@ -179,7 +175,14 @@ class Association extends Component {
                 </div>
             );
         }
-        return (<p className='Game-association'>Ведущий придумывает ассоциацию</p>);
+        if (isMasterTurn) {
+            return (<p className='Game-association'>Ведущий придумывает ассоциацию</p>);
+        }
+        return (
+            <div className='Game-association'>
+                Ассоциация:<br/>{this.props.game.state.association}
+            </div>
+        );
     }
 
     handleChange(event) {
