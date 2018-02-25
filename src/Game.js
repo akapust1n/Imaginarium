@@ -3,11 +3,15 @@ import socket from "./socket";
 import './Game.css'
 import vars from './vars'
 import getNames from "./users";
+import renderRoot from "./director";
+import CardSelect from './CardSelect'
+
 
 class Game extends Component {
     constructor(props) {
         super(props);
         socket.setHandler('Association', content => this.initPlayerTurn(content));
+        socket.setHandler('CardsOnBoard', content => this.renderGuessScreen(content));
         this.commit = this.commit.bind(this);
     }
 
@@ -87,6 +91,10 @@ class Game extends Component {
 
     initPlayerTurn(association) {
         this.setState({isMasterTurn: false, association: association});
+    }
+
+    renderGuessScreen(cards) {
+        renderRoot(<CardSelect association={this.state.association} cards={cards}/>)
     }
 
     selectCard(card) {
