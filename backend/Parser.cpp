@@ -64,7 +64,7 @@ std::string Parser::association(MasterTurn masterTurn) const
 
 int Parser::getCardId(const std::string& data) const
 {
-    std::cout<<"\n PlayerTurn:" <<data<<std::endl;
+    std::cout << "\n PlayerTurn:" << data << std::endl;
     json j_complete = json::parse(data);
     int res = j_complete["content"];
     return res;
@@ -87,6 +87,49 @@ std::string Parser::cardsOnBoard(PlayerSP& player, std::vector<CardHolder::Card>
         j_array.push_back(temp);
     }
     j_complete["content"] = j_array;
+    return j_complete.dump();
+}
+
+std::string Parser::turnEnd(std::vector<PlayerSP>& players, int mastedCardId)
+{
+    json j_complete;
+    json j_array;
+    json master;
+
+    std::vector<CardHolder::Card> dropedCards;
+    for (int i = 0; i < players.size(); i++) {
+        dropedCards.push_back(players[i]->getDropedCard());
+    }
+
+    for (int i = 0; i < dropedCards.size(); i++) {
+        json temp;
+        int card = dropedCards[i].cardId;
+        temp["card_id"] = card;
+        temp["card_url"] = dropedCards[i].cardUrl;
+        temp["isCorrect"] = card == mastedCardId;
+
+        json temp_arr;
+        if (players[i]->getIsMaster()){
+            master["viewer_id"] = players[i]->getViewer_id();
+            master["gain"] = players[i]->getScore();
+        }
+
+        for (int j = 0; j < players.size(); j++) {
+            if (players[j]->getGuessCard() == card) {
+                json player;
+                player["viewer_id"] = players[j]->getViewer_id();
+                player["gain"] = players[j]->getScore();
+                temp_arr.push_back(player);
+            }
+        }
+        temp["players"] = temp_arr;
+
+        j_array.push_back(temp);
+    }
+    j_complete["type"] = "TurnEnd";
+    j_complete["content"]["cards"] = j_array;
+    j_complete["content"]["master"] = master;
+
     return j_complete.dump();
 }
 
@@ -138,12 +181,12 @@ std::vector<std::string> Parser::createMatch(MatchSP& match)
 //TODO: сделать нормальную обработку ошибок
 Parser::MasterTurn Parser::getMasterTurn(const std::string& data)
 {
-    std::cout<<"\nMasterTurn_"<<data<<std::endl;
+    std::cout << "\nMasterTurn_" << data << std::endl;
     json j_complete = json::parse(data);
-    std::string  association;
+    std::string association;
     int card_id;
     try {
-        card_id =  j_complete["content"]["card_id"];
+        card_id = j_complete["content"]["card_id"];
         association = j_complete["content"]["association"];
         return { card_id, association };
 

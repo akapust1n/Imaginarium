@@ -51,6 +51,11 @@ int main()
                 int cardId =parser.getCardId(data);
                 mk.dropCard(&conn, cardId);
             }
+            else if(type=="PlayerGuess"){
+                int cardId =parser.getCardId(data);
+                 mk.guessCard(&conn, cardId);
+
+            }
         });
     crow::logger::setLogLevel(crow::LogLevel::Info);
 

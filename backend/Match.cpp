@@ -7,9 +7,10 @@ Match::Match()
 
 Match::Match(int _maxSize, CardHolder& cardHolder)
     : maxSize(_maxSize)
-    , dropedCards()
+    , dropedCards(0)
+    , guessCards(0)
 {
-    dropMutex.reset(new std::mutex());
+    mutex.reset(new std::mutex());
     deck = cardHolder.getDeck(60);
 }
 
@@ -71,7 +72,7 @@ int Match::getMasterCard() const
     return masterCard;
 }
 
-void Match::setMasterCard(const int &value)
+void Match::setMasterCard(const int& value)
 {
     masterCard = value;
 }
@@ -79,16 +80,33 @@ void Match::setMasterCard(const int &value)
 bool Match::dropCard(int cardId, PlayerSP player)
 {
     if (player->dropCard(cardId)) {
-        dropMutex->lock();
+        mutex->lock();
         dropedCards++;
 
         if (dropedCards == maxSize - 1) {
             dropedCards = 0;
-            dropMutex->unlock();
+            mutex->unlock();
             return true;
-        } else{
-            dropMutex->unlock();
-            return false;}
+        } else {
+            mutex->unlock();
+            return false;
+        }
+    }
+}
+
+bool Match::guessCard(int cardId, PlayerSP player)
+{
+    player->setGuessCard(cardId);
+    mutex->lock();
+    guessCards++;
+
+    if (guessCards == maxSize - 1) {
+        guessCards = 0;
+        mutex->unlock();
+        return true;
+    } else {
+        mutex->unlock();
+        return false;
     }
 }
 

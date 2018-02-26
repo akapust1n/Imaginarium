@@ -24,8 +24,12 @@ public:
     CardHolder::Card getDropedCard() const;
     void setDropedCard(const CardHolder::Card &value);
 
+    int getGuessCard() const;
+    void setGuessCard(int value);
+
 private:
     int score;
+    int guessCard;
     crow::websocket::connection* conn;
     bool isMaster;
     const std::string viewer_id;

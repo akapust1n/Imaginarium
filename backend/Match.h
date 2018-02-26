@@ -27,6 +27,8 @@ public:
     int getMasterCard() const;
     void setMasterCard(const int &value);
     bool dropCard(int cardId, PlayerSP player);
+    bool guessCard(int cardId, PlayerSP player);
+
 
     int getDropedCards() const;
 
@@ -37,7 +39,9 @@ private:
     int masterCard;
     std::vector<CardHolder::Card> deck;
     int dropedCards;
-    std::shared_ptr<std::mutex> dropMutex;
+    int guessCards;
+    std::shared_ptr<std::mutex> mutex;
+
 };
 using MatchSP = std::shared_ptr<Match>;
 #endif // MATCH_H

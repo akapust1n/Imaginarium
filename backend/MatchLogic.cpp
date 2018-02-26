@@ -76,7 +76,7 @@ void MatchLogic::masternTurn(crow::websocket::connection* conn, Parser::MasterTu
 void MatchLogic::dropCard(crow::websocket::connection* conn, int cardId)
 {
     //TODO: если отключится игрок, то всё плохо
-    auto match = matches[conn];
+    MatchSP match = matches[conn];
     if (match->dropCard(cardId, players[conn])) {
         auto gamers = match->getPlayers();
         std::vector<CardHolder::Card> dropedCards;
@@ -91,6 +91,38 @@ void MatchLogic::dropCard(crow::websocket::connection* conn, int cardId)
             }
         }
     };
+}
+
+void MatchLogic::guessCard(crow::websocket::connection* conn, int cardId)
+{
+    MatchSP match = matches[conn];
+    if (match->guessCard(cardId, players[conn])) {
+        auto gamers = match->getPlayers();
+        for (int i = 0; i < gamers.size(); i++) {
+            int cardId = gamers[i]->getDropedCard().cardId;
+            for (int j = 0; j < gamers.size(); j++) {
+                if (gamers[j]->getGuessCard() == cardId && i != j) {
+
+                    gamers[i]->setScore(gamers[j]->getScore() + 1);
+                    std::cout << "\nSET SCORE " << gamers[j]->getScore() << std::endl;
+                }
+            }
+        }
+        PlayerSP master = match->getMaster();
+        if (master->getScore()) {
+            master->setScore(master->getScore() + 3);
+        } else {
+            for (int j = 0; j < gamers.size(); j++) {
+                if (!gamers[j]->getIsMaster())
+                    gamers[j]->setScore(3);
+            }
+        }
+
+        std::string points = parser.turnEnd(gamers, match->getMasterCard());
+        for (int i = 0; i < gamers.size(); i++) {
+            gamers[i]->getConn()->send_text(points);
+        }
+    }
 }
 
 void MatchLogic::sendNotifyStartGame(MatchSP& match)

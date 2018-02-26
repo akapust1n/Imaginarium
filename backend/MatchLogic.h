@@ -16,6 +16,7 @@ public:
     void removePlayer(crow::websocket::connection* conn);
     void masternTurn(crow::websocket::connection* conn, Parser::MasterTurn data);
     void dropCard(crow::websocket::connection* conn, int cardId);
+    void guessCard(crow::websocket::connection* conn, int cardId);
 
 private:
     void sendNotifyStartGame(MatchSP &match);

@@ -71,3 +71,13 @@ void Player::setDropedCard(const CardHolder::Card &value)
     dropedCard = value;
 }
 
+int Player::getGuessCard() const
+{
+    return guessCard;
+}
+
+void Player::setGuessCard(int value)
+{
+    guessCard = value;
+}
+

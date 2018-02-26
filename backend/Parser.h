@@ -27,6 +27,7 @@ public:
     std::string association(MasterTurn masterTurn) const;
     int getCardId(const std::string &data) const;
     std::string cardsOnBoard(PlayerSP &player, std::vector<CardHolder::Card> &dropedCards) const;
+    std::string turnEnd(std::vector<PlayerSP>& players, int mastedCardId);
 
 };
 
