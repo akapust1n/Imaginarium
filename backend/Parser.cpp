@@ -122,7 +122,10 @@ std::string Parser::turnEnd(std::vector<PlayerSP>& players, int mastedCardId)
                 temp_arr.push_back(player);
             }
         }
-        temp["players"] = temp_arr;
+        if (temp_arr.empty())
+            temp["players"] = json::array();
+        else
+            temp["players"] = temp_arr;
 
         j_array.push_back(temp);
     }
