@@ -28,6 +28,7 @@ public:
     int getCardId(const std::string &data) const;
     std::string cardsOnBoard(PlayerSP &player, std::vector<CardHolder::Card> &dropedCards) const;
     std::string turnEnd(std::vector<PlayerSP>& players, int mastedCardId);
+    std::string gameOver(std::vector<PlayerSP>&players );
 
 };
 

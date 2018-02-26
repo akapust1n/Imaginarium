@@ -109,7 +109,7 @@ std::string Parser::turnEnd(std::vector<PlayerSP>& players, int mastedCardId)
         temp["isCorrect"] = card == mastedCardId;
 
         json temp_arr;
-        if (players[i]->getIsMaster()){
+        if (players[i]->getIsMaster()) {
             master["viewer_id"] = players[i]->getViewer_id();
             master["gain"] = players[i]->getScore();
         }
@@ -130,6 +130,21 @@ std::string Parser::turnEnd(std::vector<PlayerSP>& players, int mastedCardId)
     j_complete["content"]["cards"] = j_array;
     j_complete["content"]["master"] = master;
 
+    return j_complete.dump();
+}
+
+std::string Parser::gameOver(std::vector<PlayerSP>& players)
+{
+    json j_complete;
+    json j_array;
+    j_complete["type"] = "GameOver";
+    for (int i = 0; i < players.size(); i++) {
+        json temp;
+        temp["viewer_id"] = players[i]->getViewer_id();
+        temp["score"] = players[i]->getMainScore();
+        j_array.push_back(temp);
+    }
+    j_complete["content"] = j_array;
     return j_complete.dump();
 }
 

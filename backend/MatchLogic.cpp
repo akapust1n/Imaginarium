@@ -129,8 +129,13 @@ void MatchLogic::nextTurn(crow::websocket::connection *conn)
 {
     MatchSP match = matches[conn];
     if (match->nextTurn(players[conn])){
-        match->prepareTurn();
-
+        if (!match->prepareTurn()){
+            auto gamers = match->getPlayers();
+            std::string response = parser.gameOver(gamers);
+            for(int i=0; i<gamers.size();i++){
+                 gamers[i]->getConn()->send_text(response);
+            }
+        }
     }
 
 }

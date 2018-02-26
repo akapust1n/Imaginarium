@@ -31,7 +31,7 @@ public:
     bool nextTurn(PlayerSP player);
 
     int getDropedCards() const;
-    void prepareTurn();
+    bool prepareTurn();
 
 private:
     std::vector<PlayerSP> players;

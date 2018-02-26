@@ -137,8 +137,11 @@ int Match::getDropedCards() const
     return dropedCards;
 }
 
-void Match::prepareTurn()
+bool Match::prepareTurn()
 {
+    if (deck.empty()){
+        return false;
+    }
     dropedCards = 0;
     guessCards = 0;
     masterCard = 0;
@@ -147,10 +150,12 @@ void Match::prepareTurn()
     masterNum = (masterNum + 1) % maxSize;
     master=players[masterNum]->getViewer_id();
     players[masterNum]->setIsMaster(true);
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < maxSize; i++) {
         players[i]->addCard(deck.back());
         deck.pop_back();
     }
+    return true;
+
 }
 
 void Match::setMaster(std::string value)
