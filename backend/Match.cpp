@@ -9,6 +9,8 @@ Match::Match(int _maxSize, CardHolder& cardHolder)
     : maxSize(_maxSize)
     , dropedCards(0)
     , guessCards(0)
+    , nextTurnCounter(0),
+      masterNum(0)
 {
     mutex.reset(new std::mutex());
     deck = cardHolder.getDeck(60);
@@ -27,10 +29,13 @@ bool Match::isFull() const
 
 void Match::addPlayer(PlayerSP player)
 {
+    mutex->lock();
     if (!players.size()) {
         master = player->getViewer_id();
         player->setIsMaster(true);
     }
+    mutex->unlock();
+
     for (int i = 0; i < 6; i++) {
         player->addCard(deck.back());
         deck.pop_back();
@@ -110,9 +115,42 @@ bool Match::guessCard(int cardId, PlayerSP player)
     }
 }
 
+bool Match::nextTurn(PlayerSP player)
+{
+    player->addMainScore(player->getScore());
+    player->setScore(0);
+    mutex->lock();
+    nextTurnCounter++;
+
+    if (nextTurnCounter == maxSize - 1) {
+        nextTurnCounter = 0;
+        mutex->unlock();
+        return true;
+    } else {
+        mutex->unlock();
+        return false;
+    }
+}
+
 int Match::getDropedCards() const
 {
     return dropedCards;
+}
+
+void Match::prepareTurn()
+{
+    dropedCards = 0;
+    guessCards = 0;
+    masterCard = 0;
+    nextTurnCounter = 0;
+    players[masterNum]->setIsMaster(false);
+    masterNum = (masterNum + 1) % maxSize;
+    master=players[masterNum]->getViewer_id();
+    players[masterNum]->setIsMaster(true);
+    for (int i = 0; i < 6; i++) {
+        players[i]->addCard(deck.back());
+        deck.pop_back();
+    }
 }
 
 void Match::setMaster(std::string value)

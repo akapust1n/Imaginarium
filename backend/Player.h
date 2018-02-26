@@ -27,8 +27,13 @@ public:
     int getGuessCard() const;
     void setGuessCard(int value);
 
+    void addMainScore(int value);
+
+    int getMainScore() const;
+
 private:
     int score;
+    int mainScore;
     int guessCard;
     crow::websocket::connection* conn;
     bool isMaster;

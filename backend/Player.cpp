@@ -4,7 +4,8 @@ Player::Player(crow::websocket::connection* _conn, const std::string _viewer_id)
     : score(0)
     , conn(_conn)
     , viewer_id(_viewer_id)
-    , isMaster(false)
+    , isMaster(false),
+      mainScore(0)
 {
 }
 
@@ -79,5 +80,15 @@ int Player::getGuessCard() const
 void Player::setGuessCard(int value)
 {
     guessCard = value;
+}
+
+void Player::addMainScore(int value)
+{
+    mainScore += value;
+}
+
+int Player::getMainScore() const
+{
+    return mainScore;
 }
 

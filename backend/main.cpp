@@ -56,6 +56,9 @@ int main()
                  mk.guessCard(&conn, cardId);
 
             }
+            else if(type=="NextTurn"){
+                 mk.nextTurn(&conn);
+            }
         });
     crow::logger::setLogLevel(crow::LogLevel::Info);
 

@@ -125,6 +125,16 @@ void MatchLogic::guessCard(crow::websocket::connection* conn, int cardId)
     }
 }
 
+void MatchLogic::nextTurn(crow::websocket::connection *conn)
+{
+    MatchSP match = matches[conn];
+    if (match->nextTurn(players[conn])){
+        match->prepareTurn();
+
+    }
+
+}
+
 void MatchLogic::sendNotifyStartGame(MatchSP& match)
 {
     std::vector<std::string> response = parser.createMatch(match);

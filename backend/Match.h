@@ -28,18 +28,21 @@ public:
     void setMasterCard(const int &value);
     bool dropCard(int cardId, PlayerSP player);
     bool guessCard(int cardId, PlayerSP player);
-
+    bool nextTurn(PlayerSP player);
 
     int getDropedCards() const;
+    void prepareTurn();
 
 private:
     std::vector<PlayerSP> players;
     const int maxSize;
     std::string master;
-    int masterCard;
+    int masterNum;
     std::vector<CardHolder::Card> deck;
     int dropedCards;
     int guessCards;
+    int masterCard;
+    int nextTurnCounter;
     std::shared_ptr<std::mutex> mutex;
 
 };
