@@ -5,7 +5,7 @@ import vars from './vars'
 import getNames from "./users";
 import renderRoot from "./director";
 import CardSelect from './CardSelect'
-
+import TurnEnd from "./TurnEnd";
 
 class Game extends Component {
     constructor(props) {
@@ -105,6 +105,8 @@ class Game extends Component {
     }
 
     commit() {
+        socket.setHandler('TurnEnd', content => renderRoot(<TurnEnd data={content}
+                                                                    association={this.state.association}/>));
         if (this.state.isMasterTurn) {
             let data = {
                 'type': 'MasterTurn',
