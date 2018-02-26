@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import './Game.css'
 import socket from "./socket";
+import renderRoot from "./director";
+import TurnEnd from "./TurnEnd";
 
 class CardSelect extends Component {
     constructor(props) {
@@ -13,6 +15,8 @@ class CardSelect extends Component {
     }
 
     componentWillMount() {
+        socket.setHandler('TurnEnd', content => renderRoot(<TurnEnd data={content}
+                                                                    association={this.props.association}/>));
         let cards = this.props.cards.filter(card => !card.isOwn);
         this.setState({cards: cards, selected: cards[0]});
     }

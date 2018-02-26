@@ -1,0 +1,14 @@
+.TurnEnd-player-name {
+    float: left;
+    margin-right: 5pt;
+}
+
+.TurnEnd-btn-card {
+    height: 50px;
+    width: 38px;
+    display: block;
+    padding: 0;
+    margin: 0;
+    vertical-align: top;
+
+}
