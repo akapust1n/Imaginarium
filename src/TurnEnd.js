@@ -3,11 +3,14 @@ import getNames from "./users";
 import './Game.css'
 import './TurnEnd.css'
 import socket from "./socket";
+import GameOver from "./GameOver";
+import renderRoot from "./director";
 
 class TurnEnd extends Component {
     constructor(props) {
         super(props);
         this.state = {};
+        socket.setHandler('GameOver', content => renderRoot(<GameOver data={content}/>));
         TurnEnd.nextTurn = TurnEnd.nextTurn.bind(this);
     }
 
