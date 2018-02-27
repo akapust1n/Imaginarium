@@ -14,7 +14,9 @@ void MatchLogic::findMath(crow::websocket::connection* conn, const std::string v
     players.insert({ conn, std::make_shared<Player>(conn, viewer_id) });
 
     std::lock_guard<std::mutex> guard(find);
-
+//    if (match->getPhase()!=Match::BeforeStart){
+//        conn->close(parser.wrongPhase());
+//    }
     queue.push_back(players[conn]);
 
     if (queue.size() >= maxSize) {
@@ -46,7 +48,7 @@ void MatchLogic::findMath(crow::websocket::connection* conn, const std::string v
             for (int i = 0; i < gamers.size(); i++) {
                 matches[gamers[i]->getConn()] = match;
             }
-
+            match->setPhase(Match::Phase::NewTurn);
             std::cout << "\nMatch created!\n";
             sendNotifyStartGame(match);
         }
@@ -60,16 +62,15 @@ void MatchLogic::removePlayer(crow::websocket::connection* conn)
 
 void MatchLogic::masternTurn(crow::websocket::connection* conn, Parser::MasterTurn data)
 {
-    auto match = matches[conn];
+    MatchSP match = matches[conn];
     match->setMasterCard(data.cardId);
     auto player = match->getPlayers();
-
+    std::cout<<"\n Erase MasterCard viewer_id="<<match->getMaster()->getViewer_id();
+    match->getMaster()->dropCard(data.cardId);
     std::string response = parser.association(data);
     for (int i = 0; i < match->getMaxSize(); i++) {
         player[i]->getConn()->send_text(response);
-        if (player[i]->getIsMaster()) {
-            player[i]->dropCard(data.cardId);
-        }
+
     }
 }
 
@@ -135,6 +136,8 @@ void MatchLogic::nextTurn(crow::websocket::connection *conn)
             for(int i=0; i<gamers.size();i++){
                  gamers[i]->getConn()->send_text(response);
             }
+        } else{
+            sendNotifyStartGame(match);
         }
     }
 

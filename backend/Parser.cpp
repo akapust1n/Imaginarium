@@ -168,7 +168,7 @@ std::vector<std::string> Parser::createMatch(MatchSP& match)
     for (auto& player : players) {
         json temp;
         temp["viewer_id"] = player->getViewer_id();
-        temp["score"] = player->getScore();
+        temp["score"] = player->getMainScore();
         viewers.push_back(temp);
     }
 

@@ -14,6 +14,7 @@ Match::Match(int _maxSize, CardHolder& cardHolder)
 {
     mutex.reset(new std::mutex());
     deck = cardHolder.getDeck(60);
+    phase = Phase::BeforeStart;
 }
 
 //Match::Match(Match &&a):
@@ -86,9 +87,10 @@ bool Match::dropCard(int cardId, PlayerSP player)
 {
     if (player->dropCard(cardId)) {
         mutex->lock();
+        std::cout<<"\nDROP_CARD \n";
         dropedCards++;
 
-        if (dropedCards == maxSize - 1) {
+        if (dropedCards == maxSize -1 ) {
             dropedCards = 0;
             mutex->unlock();
             return true;
@@ -105,7 +107,7 @@ bool Match::guessCard(int cardId, PlayerSP player)
     mutex->lock();
     guessCards++;
 
-    if (guessCards == maxSize - 1) {
+    if (guessCards == maxSize -1 ) {
         guessCards = 0;
         mutex->unlock();
         return true;
@@ -122,7 +124,7 @@ bool Match::nextTurn(PlayerSP player)
     mutex->lock();
     nextTurnCounter++;
 
-    if (nextTurnCounter == maxSize - 1) {
+    if (nextTurnCounter == maxSize  ) {
         nextTurnCounter = 0;
         mutex->unlock();
         return true;
@@ -156,6 +158,16 @@ bool Match::prepareTurn()
     }
     return true;
 
+}
+
+Match::Phase Match::getPhase() const
+{
+    return phase;
+}
+
+void Match::setPhase(const Phase &value)
+{
+    phase = value;
 }
 
 void Match::setMaster(std::string value)

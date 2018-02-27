@@ -7,6 +7,13 @@
 
 class Match {
 public:
+    enum Phase{
+        BeforeStart = 0,
+        NewTurn,
+        MasterTurn,
+        PlayerTurn
+    };
+public:
     Match();
     Match(int _maxSize, CardHolder& cardHolder);
     //Match (Match&& a);
@@ -33,6 +40,9 @@ public:
     int getDropedCards() const;
     bool prepareTurn();
 
+    Phase getPhase() const;
+    void setPhase(const Phase &value);
+
 private:
     std::vector<PlayerSP> players;
     const int maxSize;
@@ -44,6 +54,7 @@ private:
     int masterCard;
     int nextTurnCounter;
     std::shared_ptr<std::mutex> mutex;
+    Phase phase;
 
 };
 using MatchSP = std::shared_ptr<Match>;

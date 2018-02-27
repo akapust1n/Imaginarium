@@ -27,11 +27,13 @@ std::vector<CardHolder::Card> Player::getHand() const
 void Player::addCard(CardHolder::Card card)
 {
     hand.push_back(card);
+    std::cout<<"\n push card #"<<card.cardId<<std::endl;
 }
 
 bool Player::dropCard(int id)
 {
     for (int i = 0; i < hand.size(); i++) {
+        std::cout<<"\nERASING_ hand[i]:"<<hand[i].cardId<<" id:"<<id<<std::endl;
         if (hand[i].cardId == id) {
             dropedCard.cardId = hand[i].cardId;
             dropedCard.cardUrl = hand[i].cardUrl;
@@ -39,6 +41,7 @@ bool Player::dropCard(int id)
             return true;
         }
     }
+    std::cout<<"\ncant erase card "<<id<<std::endl;
     return false;
 }
 
