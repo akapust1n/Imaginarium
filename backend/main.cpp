@@ -1,9 +1,8 @@
-#include "MatchLogic.h"
-#include "crow.h"
-#include "Parser.h"
 #include "../3rd_part/md5/md5.h"
+#include "MatchLogic.h"
+#include "Parser.h"
+#include "crow.h"
 //для корректной работы сервака  в ("../../static/cards/") должны лежать картинки
-
 
 int main()
 {
@@ -11,11 +10,11 @@ int main()
     crow::SimpleApp app;
     MatchLogic mk;
     Parser parser;
-    std::cout<<md5("a");
+    std::cout << md5("a");
     CROW_ROUTE(app, "/")
     ([]() {
         crow::response res;
-       // res.add_header("Access-Control-Allow-Origin", "*");
+        // res.add_header("Access-Control-Allow-Origin", "*");
         res.body = "Hello world!";
         return res;
     });
@@ -33,31 +32,26 @@ int main()
         })
         .onmessage([&](crow::websocket::connection& conn, const std::string& data, bool is_binary) {
             CROW_LOG_INFO << "connection message";
-            std::string type =parser.getType(data);
-            if (type=="GameJoin"){
-                if (parser.checkNewPlayer(data)){
+            std::string type = parser.getType(data);
+            if (type == "GameJoin") {
+                if (parser.checkNewPlayer(data)) {
                     conn.send_text(parser.inQueue());
                     mk.findMath(&conn, parser.viewev_id(data));
-                }
-                else{
+                } else {
                     conn.send_text(parser.authError());
                 }
-            }
-            else if (type=="MasterTurn"){
-                  auto masterTurn =  parser.getMasterTurn(data);
-                  mk.masternTurn(&conn, masterTurn);
-            }
-            else if (type=="PlayerTurn"){
-                int cardId =parser.getCardId(data);
+            } else if (type == "MasterTurn") {
+                auto masterTurn = parser.getMasterTurn(data);
+                mk.masternTurn(&conn, masterTurn);
+            } else if (type == "PlayerTurn") {
+                int cardId = parser.getCardId(data);
                 mk.dropCard(&conn, cardId);
-            }
-            else if(type=="PlayerGuess"){
-                int cardId =parser.getCardId(data);
-                 mk.guessCard(&conn, cardId);
+            } else if (type == "PlayerGuess") {
+                int cardId = parser.getCardId(data);
+                mk.guessCard(&conn, cardId);
 
-            }
-            else if(type=="NextTurn"){
-                 mk.nextTurn(&conn);
+            } else if (type == "NextTurn") {
+                mk.nextTurn(&conn);
             }
         });
     crow::logger::setLogLevel(crow::LogLevel::Info);

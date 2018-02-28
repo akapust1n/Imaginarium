@@ -21,7 +21,7 @@ public:
 
 private:
     void sendNotifyStartGame(MatchSP &match);
-
+    bool checkConn(crow::websocket::connection* conn, Match::Phase phase);
 private:
     std::unordered_map<crow::websocket::connection*, PlayerSP> players;
     std::vector<PlayerWP> queue;

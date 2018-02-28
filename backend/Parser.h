@@ -24,6 +24,8 @@ public:
     MasterTurn getMasterTurn(const std::string &data);
     std::string inQueue() const;
     std::string authError() const;
+    std::string wrongPhase() const;
+    std::string noMatch() const;
     std::string association(MasterTurn masterTurn) const;
     int getCardId(const std::string &data) const;
     std::string cardsOnBoard(PlayerSP &player, std::vector<CardHolder::Card> &dropedCards) const;

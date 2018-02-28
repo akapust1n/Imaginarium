@@ -54,6 +54,16 @@ std::string Parser::authError() const
     return j.dump();
 }
 
+std::string Parser::wrongPhase() const
+{
+    return "wrong phase!";
+}
+
+std::string Parser::noMatch() const
+{
+    return "cant find match!";
+}
+
 std::string Parser::association(MasterTurn masterTurn) const
 {
     json j;

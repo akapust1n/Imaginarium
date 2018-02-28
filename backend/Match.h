@@ -11,7 +11,8 @@ public:
         BeforeStart = 0,
         NewTurn,
         MasterTurn,
-        PlayerTurn
+        PlayerTurn,
+        PlayerGuess
     };
 public:
     Match();
