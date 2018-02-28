@@ -12,9 +12,7 @@ socket.onclose = event => {
 };
 socket.onerror = error => console.log("Ошибка " + error.message);
 socket.handlers = {};
-socket.setHandler = function (type, handler) {
-    socket.handlers[type] = handler;
-};
+socket.setHandler = (type, handler) => socket.handlers[type] = handler;
 socket.onmessage = event => {
     console.log("Получены данные " + event.data);
     let data = JSON.parse(event.data);
