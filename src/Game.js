@@ -6,6 +6,9 @@ import getNames from "./users";
 import renderRoot from "./director";
 import CardSelect from './CardSelect'
 import TurnEnd from "./TurnEnd";
+import Alert from 'react-s-alert';
+import 'react-s-alert/dist/s-alert-default.css';
+import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 
 class Game extends Component {
     constructor(props) {
@@ -76,20 +79,30 @@ class Game extends Component {
                                 </div>
                             </div>
                             <div className='col-2 center-content'>
-                                <button className='btn btn-primary'
-                                        onClick={this.commit}
-                                        hidden={
-                                            !((this.state.isMasterTurn && vars.viewer_id === this.state.master) ||
-                                                (!this.state.isMasterTurn && vars.viewer_id !== this.state.master))
-                                        }
-                                >Выбрать
-                                </button>
+                                <CommitButton association={this.state.association}
+                                              onClick={this.commit}
+                                              alert={this.alert}
+                                              hidden={
+                                                  !((this.state.isMasterTurn && vars.viewer_id === this.state.master) ||
+                                                      (!this.state.isMasterTurn && vars.viewer_id !== this.state.master))
+                                              }/>
                             </div>
                         </div>
                     </div>
                 </div>
+                <Alert stack={{limit: 1}} />
             </div>
         );
+    }
+
+    alert(e) {
+        e.preventDefault();
+        Alert.error('Введите ассоциацию', {
+            position: 'bottom-right',
+            effect: 'scale',
+            timeout: 100,
+            preserveContext: true
+        });
     }
 
     initPlayerTurn(association) {
@@ -189,6 +202,31 @@ class Association extends Component {
 
     handleChange(event) {
         this.props.game.setAssociation(event.target.value);
+        Alert.closeAll();
+    }
+}
+
+class CommitButton extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        let association = this.props.association;
+        let onClick = this.props.onClick;
+        let alert = this.props.alert;
+        let hidden = this.props.hidden;
+        console.log('association', association);
+        if (association) {
+            return (
+                <button className='btn btn-primary' onClick={onClick} hidden={hidden}>
+                    Выбрать
+                </button>
+            );
+        }
+        return (
+            <a className='btn btn-primary' href="#" onClick={alert}>Выбрать</a>
+        );
     }
 }
 
