@@ -13,6 +13,4 @@ ssh apps@$IP -p $PORT << EOF
   npm install
   npm run build
   nohup serve -s -p 3000 -c 0 build > /dev/null 2> /dev/null < /dev/null &
-
 EOF
-travis_terminate 0
