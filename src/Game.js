@@ -22,6 +22,7 @@ class Game extends Component {
         let data = this.props.data;
         data.isMasterTurn = true;
         data.association = '';
+        data.commitEnabled = true;
         getNames(data.players, players => this.setState({players: players}));
         data.selected = data.hand[0];
         data.players.find((player) => player.viewer_id === vars.viewer_id).isViewer = true;
@@ -81,21 +82,22 @@ class Game extends Component {
                             <div className='col-2 center-content'>
                                 <CommitButton association={this.state.association}
                                               onClick={this.commit}
-                                              alert={this.alert}
+                                              alert={Game.alert}
                                               hidden={
                                                   !((this.state.isMasterTurn && vars.viewer_id === this.state.master) ||
                                                       (!this.state.isMasterTurn && vars.viewer_id !== this.state.master))
-                                              }/>
+                                              }
+                                              disabled={!this.state.commitEnabled}/>
                             </div>
                         </div>
                     </div>
                 </div>
-                <Alert stack={{limit: 1}} />
+                <Alert stack={{limit: 1}}/>
             </div>
         );
     }
 
-    alert(e) {
+    static alert(e) {
         e.preventDefault();
         Alert.error('Введите ассоциацию', {
             position: 'bottom-right',
@@ -106,7 +108,7 @@ class Game extends Component {
     }
 
     initPlayerTurn(association) {
-        this.setState({isMasterTurn: false, association: association});
+        this.setState({isMasterTurn: false, association: association, commitEnabled: true});
     }
 
     renderGuessScreen(cards) {
@@ -118,6 +120,7 @@ class Game extends Component {
     }
 
     commit() {
+        this.setState({commitEnabled: false});
         socket.setHandler('TurnEnd', content => renderRoot(<TurnEnd data={content}
                                                                     association={this.state.association}/>));
         if (this.state.isMasterTurn) {
@@ -214,12 +217,12 @@ class CommitButton extends Component {
     render() {
         let association = this.props.association;
         let onClick = this.props.onClick;
-        let alert = this.props.alert;
+        let alert = Game.alert;
         let hidden = this.props.hidden;
-        console.log('association', association);
+        let disabled = this.props.disabled;
         if (association) {
             return (
-                <button className='btn btn-primary' onClick={onClick} hidden={hidden}>
+                <button className='btn btn-primary' onClick={onClick} hidden={hidden} disabled={disabled}>
                     Выбрать
                 </button>
             );

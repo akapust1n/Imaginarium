@@ -9,9 +9,9 @@ import renderRoot from "./director";
 class TurnEnd extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {commitEnabled: true};
         socket.setHandler('GameOver', content => renderRoot(<GameOver data={content}/>));
-        TurnEnd.nextTurn = TurnEnd.nextTurn.bind(this);
+        this.nextTurn = this.nextTurn.bind(this);
     }
 
     componentWillMount() {
@@ -41,7 +41,9 @@ class TurnEnd extends Component {
                         {this.state.master.name} (+{this.state.master.gain}):<br/>{this.state.association}
                     </div>
                     <div className='col-2 center-content'>
-                        <button onClick={TurnEnd.nextTurn} className='btn btn-primary'>Продолжить</button>
+                        <button disabled={!this.state.commitEnabled} onClick={this.nextTurn}
+                                className='btn btn-primary'>Продолжить
+                        </button>
                     </div>
                 </div>
             </div>
@@ -52,7 +54,8 @@ class TurnEnd extends Component {
         this.setState({selected: card})
     }
 
-    static nextTurn() {
+    nextTurn() {
+        this.setState({commitEnabled: false});
         let data = {'type': 'NextTurn'};
         console.log('sending', JSON.stringify(data));
         socket.send(JSON.stringify(data));

@@ -7,7 +7,8 @@ class CardSelect extends Component {
         super(props);
         this.state = {
             cards: [],
-            selected: {}
+            selected: {},
+            commitEnabled: true
         };
         this.commit = this.commit.bind(this);
     }
@@ -45,6 +46,7 @@ class CardSelect extends Component {
                             <div className='col-2 center-content'>
                                 <button className='btn btn-primary'
                                         onClick={this.commit}
+                                        disabled={!this.state.commitEnabled}
                                 >Выбрать
                                 </button>
                             </div>
@@ -60,6 +62,7 @@ class CardSelect extends Component {
     }
 
     commit() {
+        this.setState({commitEnabled: false});
         let data = {
             'type': 'PlayerGuess',
             'content': this.state.selected.card_id
