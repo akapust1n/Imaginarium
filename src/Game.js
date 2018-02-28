@@ -228,7 +228,7 @@ class CommitButton extends Component {
             );
         }
         return (
-            <a className='btn btn-primary' href="#" onClick={alert}>Выбрать</a>
+            <a className='btn btn-primary' href="#" onClick={alert} hidden={hidden}>Выбрать</a>
         );
     }
 }
