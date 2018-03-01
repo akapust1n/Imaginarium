@@ -133,13 +133,13 @@ void MatchLogic::guessCard(crow::websocket::connection* conn, int cardId)
             for (int j = 0; j < gamers.size(); j++) {
                 if (gamers[j]->getGuessCard() == cardId && i != j) {
 
-                    gamers[i]->setScore(gamers[j]->getScore() + 1);
-                    std::cout << "\nSET SCORE " << gamers[j]->getScore() << std::endl;
+                    gamers[i]->setScore(gamers[i]->getScore() + 1);
+                    std::cout << "\nSET SCORE " << gamers[i]->getScore() << std::endl;
                 }
             }
         }
         PlayerSP master = match->getMaster();
-        if (master->getScore()) {
+        if (master->getScore() && (master->getScore() != (gamers.size() - 1))) {
             master->setScore(master->getScore() + 3);
         } else {
             for (int j = 0; j < gamers.size(); j++) {
@@ -192,7 +192,7 @@ void MatchLogic::sendNotifyStartGame(MatchSP& match)
     }
 }
 
-bool MatchLogic::checkConn(crow::websocket::connection *conn, Match::Phase phase)
+bool MatchLogic::checkConn(crow::websocket::connection* conn, Match::Phase phase)
 {
-//TODO
+    //TODO
 }

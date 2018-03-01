@@ -140,9 +140,11 @@ bool Match::prepareTurn()
         for (auto& player : players) {
             if (player->getHand().empty())
                 counterEmpty++;
-            if (counterEmpty == players.size())
-                return false;
         }
+        if (counterEmpty == players.size())
+            return false;
+        else
+            return true;
     }
     dropedCards = 0;
     guessCards = 0;
