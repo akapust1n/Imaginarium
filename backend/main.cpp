@@ -14,7 +14,6 @@ int main()
     CROW_ROUTE(app, "/")
     ([]() {
         crow::response res;
-        // res.add_header("Access-Control-Allow-Origin", "*");
         res.body = "Hello world!";
         return res;
     });

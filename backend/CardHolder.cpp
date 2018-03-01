@@ -48,7 +48,7 @@ std::vector<CardHolder::Card> CardHolder::getDeck(int num)
         std::set<int> hash;
         int counter = 1;
         while (counter <= num) {
-            int num = rand() % numCards;
+            int num = (rand() % (numCards-1)) +1;
             if (!hash.count(num)) {
                 counter++;
                 std::string path;

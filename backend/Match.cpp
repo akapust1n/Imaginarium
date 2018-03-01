@@ -17,11 +17,6 @@ Match::Match(int _maxSize, CardHolder& cardHolder)
     phase = Phase::BeforeStart;
 }
 
-//Match::Match(Match &&a):
-//    maxSize(a.maxSize)
-//{
-//   dropMutex = std::move(a.dropMutex);
-//}
 
 bool Match::isFull() const
 {
