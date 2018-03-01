@@ -15,7 +15,7 @@ void MatchLogic::findMath(crow::websocket::connection* conn, const std::string v
 
     std::lock_guard<std::mutex> guard(find);
     if (match->getPhase() != Match::BeforeStart) {
-        conn->close(parser.wrongPhase());
+        conn->send_text(parser.wrongPhase());
     }
     queue.push_back(players[conn]);
 
@@ -63,13 +63,13 @@ void MatchLogic::removePlayer(crow::websocket::connection* conn)
 void MatchLogic::masternTurn(crow::websocket::connection* conn, Parser::MasterTurn data)
 {
     if (!matches.count(conn)) {
-        conn->close(parser.noMatch());
+        conn->send_text(parser.noMatch());
         return;
     }
     MatchSP match = matches[conn];
 
     if (match->getPhase() != Match::NewTurn) {
-        conn->close(parser.wrongPhase());
+        conn->send_text(parser.wrongPhase());
         return;
     }
     match->setPhase(Match::MasterTurn);
@@ -87,13 +87,13 @@ void MatchLogic::dropCard(crow::websocket::connection* conn, int cardId)
 {
     //TODO: если отключится игрок, то всё плохо
     if (!matches.count(conn)) {
-        conn->close(parser.noMatch());
+        conn->send_text(parser.noMatch());
         return;
     }
     MatchSP match = matches[conn];
 
     if (match->getPhase() != Match::MasterTurn) {
-        conn->close(parser.wrongPhase());
+        conn->send_text(parser.wrongPhase());
         return;
     }
     if (match->dropCard(cardId, players[conn])) {
@@ -116,13 +116,13 @@ void MatchLogic::dropCard(crow::websocket::connection* conn, int cardId)
 void MatchLogic::guessCard(crow::websocket::connection* conn, int cardId)
 {
     if (!matches.count(conn)) {
-        conn->close(parser.noMatch());
+        conn->send_text(parser.noMatch());
         return;
     }
     MatchSP match = matches[conn];
 
     if (match->getPhase() != Match::PlayerTurn) {
-        conn->close(parser.wrongPhase());
+        conn->send_text(parser.wrongPhase());
         return;
     }
     if (match->guessCard(cardId, players[conn])) {
@@ -158,13 +158,13 @@ void MatchLogic::guessCard(crow::websocket::connection* conn, int cardId)
 void MatchLogic::nextTurn(crow::websocket::connection* conn)
 {
     if (!matches.count(conn)) {
-        conn->close(parser.noMatch());
+        conn->send_text(parser.noMatch());
         return;
     }
     MatchSP match = matches[conn];
 
     if (match->getPhase() != Match::PlayerGuess) {
-        conn->close(parser.wrongPhase());
+        conn->send_text(parser.wrongPhase());
         return;
     }
     if (match->nextTurn(players[conn])) {

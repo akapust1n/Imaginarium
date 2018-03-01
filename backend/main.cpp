@@ -10,7 +10,7 @@ int main()
     crow::SimpleApp app;
     MatchLogic mk;
     Parser parser;
-    std::cout << md5("a");
+    std::cout << "Server start\n";
     CROW_ROUTE(app, "/")
     ([]() {
         crow::response res;
