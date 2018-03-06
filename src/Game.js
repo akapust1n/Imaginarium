@@ -38,6 +38,14 @@ class Game extends Component {
                 }
             }
         );
+        socket.setHandler('DC', content =>
+            getNames([content], () =>
+                Alert.error(content.name + ' покинул игру', {
+                    position: 'bottom-left',
+                    effect: 'scale',
+                    preserveContext: true
+                })
+            ));
         this.commit = this.commit.bind(this);
     }
 
