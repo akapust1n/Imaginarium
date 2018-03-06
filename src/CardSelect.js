@@ -67,7 +67,7 @@ class CardSelect extends Component {
                         </div>
                     </div>
                 </div>
-                <Alert stack={{limit: 1}}/>
+                <Alert stack={{limit: 6}}/>
             </div>
         );
     }

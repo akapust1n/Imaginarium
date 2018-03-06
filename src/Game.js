@@ -16,6 +16,28 @@ class Game extends Component {
         super(props);
         socket.setHandler('Association', content => this.initPlayerTurn(content));
         socket.setHandler('CardsOnBoard', content => this.renderGuessScreen(content));
+        socket.setHandler('AFK', content => {
+                if (content.viewer_id === vars.viewer_id) {
+                    let message = 'Вы не успели';
+                    if (content.count === 4) {
+                        message += '! Еще раз - кик!'
+                    }
+                    Alert.error(message, {
+                        position: 'bottom-left',
+                        effect: 'scale',
+                        preserveContext: true
+                    })
+                } else {
+                    getNames([content], () =>
+                        Alert.info(content.name + ' не успел', {
+                            position: 'bottom-left',
+                            effect: 'scale',
+                            preserveContext: true
+                        })
+                    )
+                }
+            }
+        );
         this.commit = this.commit.bind(this);
     }
 
@@ -94,7 +116,7 @@ class Game extends Component {
                         </div>
                     </div>
                 </div>
-                <Alert stack={{limit: 1}}/>
+                <Alert stack={{limit: 6}}/>
             </div>
         );
     }

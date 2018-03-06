@@ -48,7 +48,7 @@ class TurnEnd extends Component {
                         <CommitButton enabled={this.state.commitEnabled} onClick={this.nextTurn}/>
                     </div>
                 </div>
-                <Alert stack={{limit: 1}}/>
+                <Alert stack={{limit: 6}}/>
             </div>
         );
     }
