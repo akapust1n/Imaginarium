@@ -45,7 +45,7 @@ class TurnEnd extends Component {
                         <button disabled={!this.state.commitEnabled} onClick={this.nextTurn}
                                 className='btn btn-primary'>
                             Продолжить (
-                            <Timer countDown startTime={30}/>
+                            <Timer countDown startTime={20}/>
                             )
                         </button>
                     </div>

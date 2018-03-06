@@ -36,7 +36,7 @@ class CardSelect extends Component {
                     <div className='col-3 center-content'>
                         <img className='Game-timer-img' src='alarm-outline.png'/>
                         <div className='Game-timer'>
-                            <Timer countDown startTime={30}/>
+                            <Timer countDown startTime={60}/>
                         </div>
                     </div>
                     <div className='col=9'>
