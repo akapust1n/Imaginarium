@@ -5,6 +5,7 @@ import './TurnEnd.css'
 import socket from "./socket";
 import GameOver from "./GameOver";
 import renderRoot from "./director";
+import Timer from 'react.timer'
 
 class TurnEnd extends Component {
     constructor(props) {
@@ -42,7 +43,10 @@ class TurnEnd extends Component {
                     </div>
                     <div className='col-2 center-content'>
                         <button disabled={!this.state.commitEnabled} onClick={this.nextTurn}
-                                className='btn btn-primary'>Продолжить
+                                className='btn btn-primary'>
+                            Продолжить (
+                            <Timer countDown startTime={30}/>
+                            )
                         </button>
                     </div>
                 </div>
