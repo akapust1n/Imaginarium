@@ -8,7 +8,7 @@ import CardSelect from './CardSelect'
 import TurnEnd from "./TurnEnd";
 import Alert from 'react-s-alert';
 import 'react-s-alert/dist/s-alert-default.css';
-import 'react-s-alert/dist/s-alert-css-effects/slide.css';
+import 'react-s-alert/dist/s-alert-css-effects/scale.css';
 import Timer from 'react.timer'
 
 class Game extends Component {
@@ -49,6 +49,7 @@ class Game extends Component {
                             <div className='col-6'>
                                 <TurnTimer isMasterTurn={this.state.isMasterTurn}
                                            isMaster={vars.viewer_id === this.state.master}
+                                           commitEnabled={this.state.commitEnabled}
                                 />
                             </div>
                         </div>
@@ -103,7 +104,6 @@ class Game extends Component {
         Alert.error('Введите ассоциацию', {
             position: 'bottom-right',
             effect: 'scale',
-            timeout: 100,
             preserveContext: true
         });
     }
@@ -141,6 +141,11 @@ class Game extends Component {
             };
             console.log('sending', JSON.stringify(data));
             socket.send(JSON.stringify(data));
+            Alert.info('Ждем остальных', {
+                position: 'bottom-right',
+                effect: 'scale',
+                preserveContext: true
+            });
         }
     }
 
@@ -157,8 +162,9 @@ class TurnTimer extends Component {
     render() {
         let isMasterTurn = this.props.isMasterTurn;
         let isMaster = this.props.isMaster;
+        let commitEnabled = this.props.commitEnabled;
         let startTime = isMaster ? 120 : 30;
-        if (isMasterTurn && isMaster || (!isMasterTurn && !isMaster)) {
+        if (isMasterTurn && isMaster || (!isMasterTurn && !isMaster && commitEnabled)) {
             return (
                 <div className='center-content'>
                     <img className='Game-timer-img' src='alarm-outline.png'/>

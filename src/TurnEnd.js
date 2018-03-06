@@ -6,6 +6,9 @@ import socket from "./socket";
 import GameOver from "./GameOver";
 import renderRoot from "./director";
 import Timer from 'react.timer'
+import Alert from 'react-s-alert';
+import 'react-s-alert/dist/s-alert-default.css';
+import 'react-s-alert/dist/s-alert-css-effects/scale.css';
 
 class TurnEnd extends Component {
     constructor(props) {
@@ -42,14 +45,10 @@ class TurnEnd extends Component {
                         {this.state.master.name} (+{this.state.master.gain}):<br/>{this.state.association}
                     </div>
                     <div className='col-2 center-content'>
-                        <button disabled={!this.state.commitEnabled} onClick={this.nextTurn}
-                                className='btn btn-primary'>
-                            Продолжить (
-                            <Timer countDown startTime={20}/>
-                            )
-                        </button>
+                        <CommitButton enabled={this.state.commitEnabled} onClick={this.nextTurn}/>
                     </div>
                 </div>
+                <Alert stack={{limit: 1}}/>
             </div>
         );
     }
@@ -63,6 +62,32 @@ class TurnEnd extends Component {
         let data = {'type': 'NextTurn'};
         console.log('sending', JSON.stringify(data));
         socket.send(JSON.stringify(data));
+        Alert.info('Ждем остальных', {
+            position: 'bottom-right',
+            effect: 'scale',
+            preserveContext: true
+        });
+    }
+}
+
+class CommitButton extends Component {
+    render() {
+        let enabled = this.props.enabled;
+        let onClick = this.props.onClick;
+        if (enabled) {
+            return (
+                <button onClick={onClick} className='btn btn-primary'>
+                    Продолжить (
+                    <Timer countDown startTime={20}/>
+                    )
+                </button>
+            );
+        }
+        return (
+            <button disabled className='btn btn-primary'>
+                Продолжить
+            </button>
+        );
     }
 }
 

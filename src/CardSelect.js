@@ -2,6 +2,9 @@ import React, {Component} from "react";
 import './Game.css'
 import socket from "./socket";
 import Timer from 'react.timer'
+import Alert from "react-s-alert";
+import 'react-s-alert/dist/s-alert-default.css';
+import 'react-s-alert/dist/s-alert-css-effects/scale.css';
 
 class CardSelect extends Component {
     constructor(props) {
@@ -35,9 +38,11 @@ class CardSelect extends Component {
                 <div className='row'>
                     <div className='col-3 center-content'>
                         <img className='Game-timer-img' src='alarm-outline.png'/>
+                        {this.state.commitEnabled &&
                         <div className='Game-timer'>
                             <Timer countDown startTime={60}/>
                         </div>
+                        }
                     </div>
                     <div className='col=9'>
                         <div className='row'>
@@ -62,6 +67,7 @@ class CardSelect extends Component {
                         </div>
                     </div>
                 </div>
+                <Alert stack={{limit: 1}}/>
             </div>
         );
     }
@@ -78,6 +84,11 @@ class CardSelect extends Component {
         };
         console.log('sending', JSON.stringify(data));
         socket.send(JSON.stringify(data));
+        Alert.info('Ждем остальных', {
+            position: 'bottom-right',
+            effect: 'scale',
+            preserveContext: true
+        });
     }
 }
 
