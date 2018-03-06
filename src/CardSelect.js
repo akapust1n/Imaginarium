@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import './Game.css'
 import socket from "./socket";
+import Timer from 'react.timer'
 
 class CardSelect extends Component {
     constructor(props) {
@@ -26,11 +27,19 @@ class CardSelect extends Component {
                         Ассоциация:<br/>{this.props.association}
                     </div>
                     <div className='col-9 Game-card-big'>
-                        <div className='row'>
-                            <div className='col-12 Game-card-big center-content'>
-                                <img height={'100%'} src={this.state.selected.card_url}/>
-                            </div>
+                        <div className='Game-card-big center-content'>
+                            <img height={'100%'} src={this.state.selected.card_url}/>
                         </div>
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='col-3 center-content'>
+                        <img className='Game-timer-img' src='alarm-outline.png'/>
+                        <div className='Game-timer'>
+                            <Timer countDown startTime={30}/>
+                        </div>
+                    </div>
+                    <div className='col=9'>
                         <div className='row'>
                             <div className='col-10'>
                                 <div className='row'>
