@@ -9,6 +9,7 @@ import TurnEnd from "./TurnEnd";
 import Alert from 'react-s-alert';
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/slide.css';
+import Timer from 'react.timer'
 
 class Game extends Component {
     constructor(props) {
@@ -46,9 +47,9 @@ class Game extends Component {
                                 </div>
                             </div>
                             <div className='col-6'>
-                                <div className='Game-timer'>
-
-                                </div>
+                                <TurnTimer isMasterTurn={this.state.isMasterTurn}
+                                           isMaster={vars.viewer_id === this.state.master}
+                                />
                             </div>
                         </div>
                         <div className='row'>
@@ -148,6 +149,33 @@ class Game extends Component {
     }
 }
 
+class TurnTimer extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        let isMasterTurn = this.props.isMasterTurn;
+        let isMaster = this.props.isMaster;
+        let startTime = isMaster ? 120 : 30;
+        if (isMasterTurn && isMaster || (!isMasterTurn && !isMaster)) {
+            return (
+                <div className='center-content'>
+                    <img className='Game-timer-img' src='alarm-outline.png'/>
+                    <div className='Game-timer'>
+                        <Timer countDown startTime={startTime}/>
+                    </div>
+                </div>
+            );
+        }
+        return (
+            <div className='center-content'>
+                <img className='Game-timer-img' src='alarm-outline.png'/>
+            </div>
+        );
+    }
+}
+
 class PlayerListItem extends Component {
     render() {
         let player = this.props.player;
@@ -182,14 +210,21 @@ class Association extends Component {
     render() {
         let isMasterTurn = this.props.isMasterTurn;
         let isMaster = this.props.isMaster;
-        if (isMasterTurn && isMaster) {
-            return (
-                <div className='form-group'>
+        if (isMaster) {
+            if (isMasterTurn) {
+                return (
+                    <div className='form-group'>
                     <textarea className='Game-association-input form-control'
                               rows="3"
                               placeholder='Ассоциация'
                               onChange={this.handleChange}
                     />
+                    </div>
+                );
+            }
+            return (
+                <div className='Game-association'>
+                    Ассоциация:<br/>{this.props.game.state.association}<br/><br/>Подождите, пока ходят игроки
                 </div>
             );
         }
