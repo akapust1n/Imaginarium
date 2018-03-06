@@ -3,7 +3,7 @@ import fetchJsonp from 'fetch-jsonp'
 
 function getNames(users, callback) {
     let ids = users.map(user => user.viewer_id);
-    fetchJsonp(`https://api.vk.com/method/users.get?access_token=${vars['access_token']}&user_ids=${ids}`)
+    fetchJsonp(`https://api.vk.com/method/users.get?access_token=${vars['access_token']}&v=5.73&user_ids=${ids}`)
         .then(response => response.json())
         .then(json => {
             console.log('api.vk.com/method/users.get', json);
