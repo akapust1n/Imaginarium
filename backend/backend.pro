@@ -35,7 +35,8 @@ HEADERS += \
     ../3rd_part/md5/md5.h \
     Parser.h \
     CardHolder.h \
-    MatchLogic.h
+    MatchLogic.h \
+    Timer.h
 
 DISTFILES += \
     ../3rd_part/md5/README.md

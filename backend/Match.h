@@ -20,7 +20,6 @@ public:
     //Match (Match&& a);
     bool isFull() const;
     void addPlayer(PlayerSP player);
-
     int getMaxSize() const;
 
     std::vector<PlayerSP> getPlayers() const; //TODO: оптимизировать по памяти
@@ -43,6 +42,11 @@ public:
 
     Phase getPhase() const;
     void setPhase(const Phase &value);
+
+    //afk section
+    void lock();
+    void unlock();
+    void masterAfk() ;
 
 private:
     std::vector<PlayerSP> players;

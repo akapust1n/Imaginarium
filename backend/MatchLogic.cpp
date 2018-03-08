@@ -1,5 +1,6 @@
 #include "MatchLogic.h"
 #include "iostream"
+#include "Timer.h"
 
 MatchLogic::MatchLogic()
     : cardHolder("../../static/cards/")
@@ -62,11 +63,17 @@ void MatchLogic::removePlayer(crow::websocket::connection* conn)
 
 void MatchLogic::masternTurn(crow::websocket::connection* conn, Parser::MasterTurn data)
 {
-    if (!matches.count(conn)) {
+    if (!matches.count(conn) or !players.count(conn)) {
         conn->send_text(parser.noMatch());
         return;
     }
     MatchSP match = matches[conn];
+    match->lock();
+    if (!players[conn]->getIsMaster()) {
+        match->unlock();
+        return;
+    }
+    match->unlock();
 
     if (match->getPhase() != Match::NewTurn) {
         conn->send_text(parser.wrongPhase());
@@ -190,6 +197,15 @@ void MatchLogic::sendNotifyStartGame(MatchSP& match)
                   << response[i];
         players[i]->getConn()->send_text(response[i]);
     }
+  std::future<void> result( std::async(timer,120));
+  int deckSize = match->getDeckSize();
+  result.get();
+  match->lock();
+  if (match->getDeckSize()==deckSize){
+      match->masterAfk();
+  }
+  match->unlock();;
+
 }
 
 bool MatchLogic::checkConn(crow::websocket::connection* conn, Match::Phase phase)

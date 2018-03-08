@@ -38,6 +38,16 @@ void Match::addPlayer(PlayerSP player)
     players.push_back(player);
 }
 
+void Match::masterAfk()
+{
+    for(int i=0;i<maxSize;i++){
+        if (!players[i]->getIsMaster()){
+            players[i]->addMainScore(3);
+        }
+    }
+    prepareTurn();
+}
+
 int Match::getMaxSize() const
 {
     return maxSize;
@@ -169,6 +179,16 @@ Match::Phase Match::getPhase() const
 void Match::setPhase(const Phase& value)
 {
     phase = value;
+}
+
+void Match::lock()
+{
+    mutex->lock();
+}
+
+void Match::unlock()
+{
+    mutex->unlock();
 }
 
 void Match::setMaster(std::string value)
