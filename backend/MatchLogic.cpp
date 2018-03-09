@@ -1,6 +1,6 @@
 #include "MatchLogic.h"
-#include "iostream"
 #include "Timer.h"
+#include "iostream"
 
 MatchLogic::MatchLogic()
     : cardHolder("../../static/cards/")
@@ -14,7 +14,7 @@ void MatchLogic::findMath(crow::websocket::connection* conn, const std::string v
     int maxSize = match->getMaxSize();
     players.insert({ conn, std::make_shared<Player>(conn, viewer_id) });
 
-    std::lock_guard<std::mutex> guard(find);
+    std::unique_lock<std::mutex> guard(find);
     if (match->getPhase() != Match::BeforeStart) {
         conn->send_text(parser.wrongPhase());
     }
@@ -51,6 +51,7 @@ void MatchLogic::findMath(crow::websocket::connection* conn, const std::string v
             }
             match->setPhase(Match::Phase::NewTurn);
             std::cout << "\nMatch created!\n";
+            guard.unlock();
             sendNotifyStartGame(match);
         }
     }
@@ -193,27 +194,27 @@ void MatchLogic::sendNotifyStartGame(MatchSP& match)
     std::vector<std::string> response = parser.createMatch(match);
     const std::vector<PlayerSP>& players = match->getPlayers();
     for (int i = 0; i < players.size(); i++) {
-        std::cout << "\n Response \n"<< players[i]->getViewer_id()
+        std::cout << "\n Response \n"
+                  << players[i]->getViewer_id()
                   << response[i];
         players[i]->getConn()->send_text(response[i]);
-        
     }
     int deckSize = match->getDeckSize();
-    auto timer_1 = [&](){
-        std::cout<<"\nTimer start!\nÐ";
+    auto timer_1 = [&]() {
+        std::cout << "\nTimer start!\nÐ";
         timer(20);
         match->lock();
-        if (match->getDeckSize()==deckSize){
-            std::cout<<"\n master afk\n";
+        if (match->getDeckSize() == deckSize) {
+            std::cout << "\n master afk\n";
             match->masterAfk();
-            sendNotifyStartGame(match);        
+            sendNotifyStartGame(match);
         }
-        match->unlock();;
-        std::cout<<"\n timer finished\n";
-           };
-   auto temp =    std::async(std::launch::async,timer_1);
-
-
+        match->unlock();
+        std::cout << "\n timer finished\n";
+    };
+    //auto temp = std::async(std::launch::async, timer_1);
+    //std::future<void> temp = std::async(std::launch::async, timer_1); ya hz pochemu ne rabotaet
+    std::thread(timer_1).detach();
 }
 
 bool MatchLogic::checkConn(crow::websocket::connection* conn, Match::Phase phase)
