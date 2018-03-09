@@ -32,6 +32,10 @@ void Player::addCard(CardHolder::Card card)
 
 bool Player::dropCard(int id)
 {
+    if(id==-1) {
+        hand.erase(hand.begin());
+        return true;
+    }
     for (int i = 0; i < hand.size(); i++) {
         std::cout<<"\nERASING_ hand[i]:"<<hand[i].cardId<<" id:"<<id<<std::endl;
         if (hand[i].cardId == id) {

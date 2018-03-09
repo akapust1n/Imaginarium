@@ -44,6 +44,7 @@ void Match::masterAfk()
         if (!players[i]->getIsMaster()){
             players[i]->addMainScore(3);
         }
+        players[i]->dropCard();
     }
     prepareTurn();
 }

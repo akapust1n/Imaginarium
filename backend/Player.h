@@ -13,7 +13,7 @@ public:
     std::vector<CardHolder::Card> getHand() const;
 
     void addCard(CardHolder::Card card);
-    bool dropCard(int id);
+    bool dropCard(int id=-1);
 
     int getScore() const;
     void setScore(int value);

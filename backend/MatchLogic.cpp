@@ -206,6 +206,8 @@ void MatchLogic::sendNotifyStartGame(MatchSP& match)
         match->lock();
         if (match->getDeckSize() == deckSize) {
             std::cout << "\n master afk\n";
+            match->setPhase(Match::NewTurn);
+            match->unlock();
             match->masterAfk();
             sendNotifyStartGame(match);
         }
