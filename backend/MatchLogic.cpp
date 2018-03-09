@@ -197,14 +197,17 @@ void MatchLogic::sendNotifyStartGame(MatchSP& match)
                   << response[i];
         players[i]->getConn()->send_text(response[i]);
     }
-  std::future<void> result( std::async(timer,120));
-  int deckSize = match->getDeckSize();
-  result.get();
-  match->lock();
-  if (match->getDeckSize()==deckSize){
-      match->masterAfk();
-  }
-  match->unlock();;
+    int deckSize = match->getDeckSize();
+    auto timer_1 = [&](){
+        timer(120);
+        match->lock();
+        if (match->getDeckSize()==deckSize){
+            match->masterAfk();
+        }
+        match->unlock();;
+    };
+     std::future<void> result( std::async(timer_1));
+
 
 }
 
