@@ -40,8 +40,8 @@ void Match::addPlayer(PlayerSP player)
 
 void Match::masterAfk()
 {
-    for(int i=0;i<maxSize;i++){
-        if (!players[i]->getIsMaster()){
+    for (int i = 0; i < maxSize; i++) {
+        if (!players[i]->getIsMaster()) {
             players[i]->addMainScore(3);
         }
         players[i]->dropCard();
@@ -189,7 +189,9 @@ void Match::lock()
 
 void Match::unlock()
 {
-    mutex->unlock();
+    if (!mutex->try_lock()) {
+        mutex->unlock();
+    }
 }
 
 void Match::setMaster(std::string value)
