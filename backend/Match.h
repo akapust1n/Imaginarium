@@ -46,7 +46,7 @@ public:
     //afk section
     void lock();
     void unlock();
-    void masterAfk() ;
+    bool masterAfk() ;
 
 private:
     std::vector<PlayerSP> players;

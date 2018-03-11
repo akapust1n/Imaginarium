@@ -38,7 +38,7 @@ void Match::addPlayer(PlayerSP player)
     players.push_back(player);
 }
 
-void Match::masterAfk()
+bool Match::masterAfk()
 {
     for (int i = 0; i < maxSize; i++) {
         if (!players[i]->getIsMaster()) {
@@ -46,7 +46,8 @@ void Match::masterAfk()
         }
         players[i]->dropCard();
     }
-    prepareTurn();
+   return prepareTurn();
+
 }
 
 int Match::getMaxSize() const
@@ -184,14 +185,15 @@ void Match::setPhase(const Phase& value)
 
 void Match::lock()
 {
+    // bool zz = mutex->try_lock();
+    std::cout << "\nTRY LOCK\n";
     mutex->lock();
 }
 
 void Match::unlock()
 {
-    if (!mutex->try_lock()) {
-        mutex->unlock();
-    }
+    mutex->try_lock();
+    mutex->unlock();
 }
 
 void Match::setMaster(std::string value)

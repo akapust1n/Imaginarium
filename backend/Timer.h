@@ -5,10 +5,10 @@
 #include <iostream>
 void timer(int secs)
 {
-    std::cout << "Start\n";
+    std::cout << "Start sleep\n";
 
     std::this_thread::sleep_for(std::chrono::seconds(secs));
 
-    std::cout << "DONE\n";
+    std::cout << "DONE sleep\n";
 }
 #endif // TIMER_H
