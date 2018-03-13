@@ -3,8 +3,6 @@ import getNames from "./users";
 import './Game.css'
 import './TurnEnd.css'
 import socket from "./socket";
-import GameOver from "./GameOver";
-import renderRoot from "./director";
 import Timer from 'react.timer'
 import Alert from 'react-s-alert';
 import 'react-s-alert/dist/s-alert-default.css';
@@ -14,7 +12,6 @@ class TurnEnd extends Component {
     constructor(props) {
         super(props);
         this.state = {commitEnabled: true};
-        socket.setHandler('GameOver', content => renderRoot(<GameOver data={content}/>));
         this.nextTurn = this.nextTurn.bind(this);
     }
 

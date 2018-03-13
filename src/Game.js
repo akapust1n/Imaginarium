@@ -10,12 +10,14 @@ import Alert from 'react-s-alert';
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/scale.css';
 import Timer from 'react.timer'
+import GameOver from "./GameOver";
 
 class Game extends Component {
     constructor(props) {
         super(props);
         socket.setHandler('Association', content => this.initPlayerTurn(content));
         socket.setHandler('CardsOnBoard', content => this.renderGuessScreen(content));
+        socket.setHandler('GameOver', content => renderRoot(<GameOver data={content}/>));
         socket.setHandler('AFK', content => {
                 if (content.viewer_id === vars.viewer_id) {
                     let message = 'Вы не успели';
