@@ -2,7 +2,7 @@
 #define PLAYER_H
 #include <crow.h>
 #include "CardHolder.h"
-
+/*! Класс игрока */
 class Player {
 public:
     Player(crow::websocket::connection* _conn, const std::string _viewer_id);

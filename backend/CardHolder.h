@@ -2,7 +2,7 @@
 #define CARDHOLDER_H
 #include <vector>
 #include <string>
-
+/*! Класс - колода карт */
 class CardHolder
 {
 public:

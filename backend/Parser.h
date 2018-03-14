@@ -6,6 +6,7 @@
 #include <CardHolder.h>
 #include "Match.h"
 
+/*! Парсер-запросов */
 class Parser
 {
 public:

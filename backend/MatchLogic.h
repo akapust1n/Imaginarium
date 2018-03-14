@@ -8,7 +8,7 @@
 #include <mutex>
 #include <unordered_map>
 #include <vector>
-
+/*! Класс игровой логики */
 class MatchLogic {
 public:
     MatchLogic();
@@ -18,6 +18,7 @@ public:
     void dropCard(crow::websocket::connection* conn, int cardId);
     void guessCard(crow::websocket::connection* conn, int cardId);
     void nextTurn(crow::websocket::connection* conn);
+    bool erase(crow::websocket::connection* conn);
 
 private:
     void sendNotifyStartGame(MatchSP &match);

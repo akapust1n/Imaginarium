@@ -4,7 +4,8 @@
 #include <Player.h>
 #include <vector>
 #include <mutex>
-
+#include <crow.h>
+/*! Матч */
 class Match {
 public:
     enum Phase{
@@ -47,10 +48,11 @@ public:
     void lock();
     void unlock();
     bool masterAfk() ;
+    bool erasePlayer(crow::websocket::connection* conn);
 
 private:
     std::vector<PlayerSP> players;
-    const int maxSize;
+     int maxSize;
     std::string master;
     int masterNum;
     std::vector<CardHolder::Card> deck;

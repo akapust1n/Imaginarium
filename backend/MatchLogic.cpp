@@ -10,7 +10,7 @@ MatchLogic::MatchLogic()
 void MatchLogic::findMath(crow::websocket::connection* conn, const std::string viewer_id)
 {
     std::cout << "Try to find game" << std::endl;
-    MatchSP match = std::make_unique<Match>(2, cardHolder);
+    MatchSP match = std::make_unique<Match>(3, cardHolder);
     int maxSize = match->getMaxSize();
     players.insert({ conn, std::make_shared<Player>(conn, viewer_id) });
 
@@ -149,9 +149,17 @@ void MatchLogic::guessCard(crow::websocket::connection* conn, int cardId)
         if (master->getScore() && (master->getScore() != (gamers.size() - 1))) {
             master->setScore(master->getScore() + 3);
         } else {
+            master->setScore(0);
+        }
+        if (master->getScore() == (gamers.size() - 1)) {
             for (int j = 0; j < gamers.size(); j++) {
                 if (!gamers[j]->getIsMaster())
                     gamers[j]->setScore(3);
+            }
+        } else {
+            for (int j = 0; j < gamers.size(); j++) {
+                if (gamers[j]->getGuessCard() == master->getDropedCard().cardId)
+                    gamers[j]->setScore(gamers[j]->getScore() + 3);
             }
         }
 
@@ -199,31 +207,61 @@ void MatchLogic::sendNotifyStartGame(MatchSP& match)
                   << response[i];
         players[i]->getConn()->send_text(response[i]);
     }
-    auto timer_1 = [&](int deckSize, MatchSP match1) {
-        timer(20);
-        match1->unlock(); // ¯\_(?)_/¯
-        match1->lock();
-        if (match1->getDeckSize() == deckSize) {
-            std::cout << "\n master afk\n";
-            match1->setPhase(Match::NewTurn);
-            match1->unlock();
+    //    auto timer_1 = [&](int deckSize, MatchSP match1) {
+    //        timer(120);
+    //        match1->unlock(); // ¯\_(?)_/¯
+    //        match1->lock();
+    //        if (match1->getDeckSize() == deckSize) {
+    //            std::cout << "\n master afk\n";
+    //            match1->setPhase(Match::NewTurn);
+    //            match1->unlock();
 
-            if (match1->masterAfk()) {
-                sendNotifyStartGame(match1);
-            } else {
-                auto gamers = match1->getPlayers();
-                std::string response = parser.gameOver(gamers);
-                for (int i = 0; i < gamers.size(); i++) {
-                    gamers[i]->getConn()->send_text(response);
-                }
-            }
-        }
-        match1->unlock();
-    };
-    std::thread(timer_1, match->getDeckSize(), match).detach();
+    //            if (match1->masterAfk()) {
+    //                sendNotifyStartGame(match1);
+    //            } else {
+    //                auto gamers = match1->getPlayers();
+    //                std::string response = parser.gameOver(gamers);
+    //                for (int i = 0; i < gamers.size(); i++) {
+    //                    gamers[i]->getConn()->send_text(response);
+    //                }
+    //            }
+    //        }
+    //        match1->unlock();
+    //    };
+    //    std::thread(timer_1, match->getDeckSize(), match).detach();
 }
 
 bool MatchLogic::checkConn(crow::websocket::connection* conn, Match::Phase phase)
 {
     //TODO
+}
+bool MatchLogic::erase(crow::websocket::connection* conn)
+{
+
+    MatchSP match = matches[conn];
+
+    if (match){
+        match->lock();
+        match->erasePlayer(conn);
+    }
+    else{
+        //match->unlock();
+        return false;
+    }
+    if (!match->prepareTurn() || match->getPlayers().size()<2 ) {
+        auto gamers = match->getPlayers();
+        std::string response = parser.gameOver(gamers);
+        for (int i = 0; i < gamers.size(); i++) {
+            gamers[i]->getConn()->send_text(response);
+        }
+        match->unlock();
+        for(auto gamer:gamers){
+           match->erasePlayer(gamer->getConn());
+        }
+        matches.erase(conn);
+    } else {
+        match->unlock();;
+        match->setPhase(Match::NewTurn);
+        sendNotifyStartGame(match);
+    }
 }

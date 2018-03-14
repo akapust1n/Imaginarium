@@ -5,7 +5,6 @@ CONFIG -= app_bundle
 
 
 DEFINES += QT_DEPRECATED_WARNINGS
-CONFIG += c++14
 CONFIG += conan_basic_setup
 include(conanbuildinfo.pri)
 

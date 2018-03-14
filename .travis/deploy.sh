@@ -16,6 +16,7 @@ ssh -o "StrictHostKeyChecking no" apps@$IP -p $PORT <<EOF
   conan install .
   qmake
   make
+  doxygen cf.conf
   pkill -f backend
   nohup ./backend > log.out 2> log.err < /dev/null &
 EOF

@@ -26,7 +26,8 @@ int main()
         })
         .onclose([&](crow::websocket::connection& conn, const std::string& reason) {
             CROW_LOG_INFO << "websocket connection closed: " << reason;
-            mk.removePlayer(&conn);
+            //mk.removePlayer(&conn);
+            mk.erase(&conn);
 
         })
         .onmessage([&](crow::websocket::connection& conn, const std::string& data, bool is_binary) {

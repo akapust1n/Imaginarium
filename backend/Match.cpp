@@ -50,6 +50,23 @@ bool Match::masterAfk()
 
 }
 
+bool Match::erasePlayer(crow::websocket::connection *conn)
+{
+    for(auto it = players.begin();it!=players.end(); ++it){
+
+        if ((*it)->getConn()==conn){
+               players.erase(it);
+                maxSize--;
+
+               return true;
+        };
+
+
+    }
+
+   return true;
+}
+
 int Match::getMaxSize() const
 {
     return maxSize;
@@ -153,20 +170,22 @@ bool Match::prepareTurn()
             if (player->getHand().empty())
                 counterEmpty++;
         }
-        if (counterEmpty == players.size())
+        if (counterEmpty)
             return false;
-        else
-            return true;
     }
     dropedCards = 0;
     guessCards = 0;
     masterCard = 0;
     nextTurnCounter = 0;
-    players[masterNum]->setIsMaster(false);
+    if(!players.size())
+        return false;
+    if(players[masterNum]){
+        players[masterNum]->setIsMaster(false);
+    }
     masterNum = (masterNum + 1) % maxSize;
     master = players[masterNum]->getViewer_id();
     players[masterNum]->setIsMaster(true);
-    for (int i = 0; i < maxSize; i++) {
+    for (int i = 0; i < maxSize && deck.size(); i++) {
         players[i]->addCard(deck.back());
         deck.pop_back();
     }

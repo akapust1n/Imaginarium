@@ -37,6 +37,14 @@ install:
 
 script:
   - cd backend
+ # tests
+  - cd tests
+  - conan install .
+  - qmake
+  - make
+  - ./tests
+  - cd ..
+# end tests
   - conan install .
   - qmake
   - make
