@@ -14,7 +14,6 @@ class GameOver extends Component {
 
     componentWillMount() {
         let players = this.props.data;
-        console.log(players);
         players.sort((a, b) => b.score - a.score);
         getNames(players, () => this.setState({players: players}));
     }
