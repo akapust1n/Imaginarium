@@ -6,6 +6,9 @@ import vars from './vars'
 import socket from './socket'
 import renderRoot from './director'
 
+/**
+ * Главное меню
+ */
 class App extends Component {
     constructor() {
         super();
@@ -26,6 +29,9 @@ class App extends Component {
         );
     }
 
+    /**
+     * Начать игру
+     */
     static joinGame() {
         renderRoot(<Loading/>);
         let data = {

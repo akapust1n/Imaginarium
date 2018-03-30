@@ -1,5 +1,8 @@
 import {w3cwebsocket as W3CWebSocket} from "websocket";
 
+/**
+ * Сокет
+ */
 let socket = new W3CWebSocket("wss://kapust1n.ru:5000/ws");
 socket.onopen = () => console.log("Соединение установлено.");
 socket.onclose = event => {

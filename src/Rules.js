@@ -1,6 +1,9 @@
 import React, {Component} from "react";
 import rules from './rules-content';
 
+/**
+ * Правила игры
+ */
 class Rules extends Component {
     constructor() {
         super();
@@ -21,6 +24,9 @@ class Rules extends Component {
         );
     }
 
+    /**
+     * Показать правила
+     */
     showRules() {
         this.setState({displayRules: true});
     }

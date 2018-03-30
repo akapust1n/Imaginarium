@@ -5,6 +5,9 @@ import socket from "./socket";
 import renderRoot from "./director";
 import Game from "./Game";
 
+/**
+ * Экран, который отображается, когда игрок ждет подбора игроков
+ */
 class Loading extends Component {
     constructor() {
         super();
@@ -26,6 +29,10 @@ class Loading extends Component {
         );
     }
 
+    /**
+     * Изменить надпись над индикатором загрузки
+     * @param status Надпись над индикатором загрузки
+     */
     setStatus(status) {
         this.setState({status: status});
     }

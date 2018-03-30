@@ -1,3 +1,7 @@
+/**
+ * Параметры, которые ВК передает в приложение при запуске
+ * @type {{}}
+ */
 let vars = {};
 window.location.search.substring(1).split('&').forEach(pair => {
     let pairSplit = pair.split('=');

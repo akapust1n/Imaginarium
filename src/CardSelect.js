@@ -6,6 +6,9 @@ import Alert from "react-s-alert";
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/scale.css';
 
+/**
+ * Экран, на котором игрок угадывает карту ведущего из карт, лежащих на столе
+ */
 class CardSelect extends Component {
     constructor(props) {
         super(props);
@@ -72,10 +75,17 @@ class CardSelect extends Component {
         );
     }
 
+    /**
+     * Выбрать карту
+     * @param card Карта
+     */
     selectCard(card) {
         this.setState({selected: card})
     }
 
+    /**
+     * Подтвердить выбор
+     */
     commit() {
         this.setState({commitEnabled: false});
         let data = {

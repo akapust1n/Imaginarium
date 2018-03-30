@@ -5,6 +5,9 @@ import './GameOver.css'
 import renderRoot from "./director";
 import App from "./App";
 
+/**
+ * Экран конца игры
+ */
 class GameOver extends Component {
     constructor(props) {
         super(props);
@@ -38,6 +41,9 @@ class GameOver extends Component {
         );
     }
 
+    /**
+     * Выйти в главное меню
+     */
     static menu() {
         renderRoot(<App/>);
     }

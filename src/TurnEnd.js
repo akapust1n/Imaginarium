@@ -8,6 +8,9 @@ import Alert from 'react-s-alert';
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/scale.css';
 
+/**
+ * Экран окончания хода
+ */
 class TurnEnd extends Component {
     constructor(props) {
         super(props);
@@ -50,10 +53,17 @@ class TurnEnd extends Component {
         );
     }
 
+    /**
+     * Выбрать карту
+     * @param card Карта
+     */
     selectCard(card) {
         this.setState({selected: card})
     }
 
+    /**
+     * Начать следующий ход
+     */
     nextTurn() {
         this.setState({commitEnabled: false});
         let data = {'type': 'NextTurn'};
@@ -67,6 +77,9 @@ class TurnEnd extends Component {
     }
 }
 
+/**
+ * Кнопка начала следующего хода
+ */
 class CommitButton extends Component {
     render() {
         let enabled = this.props.enabled;
@@ -88,6 +101,9 @@ class CommitButton extends Component {
     }
 }
 
+/**
+ * Карта
+ */
 class Card extends Component {
     render() {
         let card = this.props.data;

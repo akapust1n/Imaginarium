@@ -12,6 +12,10 @@ import 'react-s-alert/dist/s-alert-css-effects/scale.css';
 import Timer from 'react.timer'
 import GameOver from "./GameOver";
 
+/**
+ * Основной экран игры, на котором ведущий придумывает ассоциацию и выбирает карту,
+ * после чего игроки играют карты, подходящие к этой ассоциации
+ */
 class Game extends Component {
     constructor(props) {
         super(props);
@@ -131,6 +135,9 @@ class Game extends Component {
         );
     }
 
+    /**
+     * Показать алерт "Введите ассоциацию"
+     */
     static alert(e) {
         e.preventDefault();
         Alert.error('Введите ассоциацию', {
@@ -140,18 +147,33 @@ class Game extends Component {
         });
     }
 
+    /**
+     * Перейти от хода ведущего к ходу игрока
+     * @param association Ассоциация, придуманная ведущим
+     */
     initPlayerTurn(association) {
         this.setState({isMasterTurn: false, association: association, commitEnabled: true});
     }
 
+    /**
+     * Перейти на экран угадывания карты ведущего
+     * @param cards Карты на столе
+     */
     renderGuessScreen(cards) {
         renderRoot(<CardSelect association={this.state.association} cards={cards}/>)
     }
 
+    /**
+     * Выбрать карту
+     * @param card Карта
+     */
     selectCard(card) {
         this.setState({selected: card})
     }
 
+    /**
+     * Подтвердить выбор
+     */
     commit() {
         this.setState({commitEnabled: false});
         socket.setHandler('TurnEnd', content => renderRoot(<TurnEnd data={content}
@@ -181,11 +203,18 @@ class Game extends Component {
         }
     }
 
+    /**
+     * Сохранить ассоциацию в состояние
+     * @param association Ассоциация
+     */
     setAssociation(association) {
         this.setState({association: association})
     }
 }
 
+/**
+ * Таймер на ход
+ */
 class TurnTimer extends Component {
     constructor(props) {
         super(props);
@@ -214,6 +243,9 @@ class TurnTimer extends Component {
     }
 }
 
+/**
+ * Элемент списка игроков
+ */
 class PlayerListItem extends Component {
     render() {
         let player = this.props.player;
@@ -231,6 +263,9 @@ class PlayerListItem extends Component {
     }
 }
 
+/**
+ * Список игроков
+ */
 class PlayerList extends Component {
     render() {
         let listItems = this.props.players.map((player) =>
@@ -239,6 +274,9 @@ class PlayerList extends Component {
     }
 }
 
+/**
+ * Поле для ввода ассоциации
+ */
 class Association extends Component {
     constructor(props) {
         super(props);
@@ -282,6 +320,9 @@ class Association extends Component {
     }
 }
 
+/**
+ * Кнопка подтверждения выбора
+ */
 class CommitButton extends Component {
     constructor(props) {
         super(props);
