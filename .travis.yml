@@ -9,6 +9,9 @@ branches:
 before_install:
   - openssl aes-256-cbc -K $encrypted_9538a47fef40_key -iv $encrypted_9538a47fef40_iv -in .travis/travis.enc -out .travis/travis -d
 
+after_script:
+  - eslint src
+
 after_success:
   - echo -e "Host *\n\tStrictHostKeyChecking no\nUserKnownHostsFile=/dev/null\n" >> ~/.ssh/config
   - chmod +x .travis/deploy.sh
