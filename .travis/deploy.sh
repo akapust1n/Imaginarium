@@ -12,5 +12,6 @@ ssh apps@$IP -p $PORT << EOF
   pkill -f serve
   npm install
   npm run build
+  jsdoc -d ./docs src
   nohup serve -s -p 3000 -c 0 build > /dev/null 2> /dev/null < /dev/null &
 EOF
