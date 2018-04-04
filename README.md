@@ -2,6 +2,10 @@
 [backend:](https://github.com/akapust1n/Imagination/tree/backend) [![Build Status](https://travis-ci.org/akapust1n/Imagination.svg?branch=backend)](https://travis-ci.org/akapust1n/Imagination)  
 [frontend:](https://github.com/akapust1n/Imagination/tree/frontend) [![Build Status](https://travis-ci.org/akapust1n/Imagination.svg?branch=frontend)](https://travis-ci.org/akapust1n/Imagination)
 
+## Docs
+[backend](https://kapust1n.ru:4000/backend/)  
+[frontend](https://kapust1n.ru:4000/frontend/)  
+
 # Imagination
 
  [Настольная игра ВКонтакте](https://vk.com/app6375355_21093986). 
