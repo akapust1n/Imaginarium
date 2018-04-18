@@ -2,20 +2,25 @@
 }
 
 .Game-left {
-    background-color: aqua;
+    background-position:50% 50%;
+    background-size: cover;
+    background-image: url(http://www.setwalls.ru/pic/201305/1680x1050/setwalls.ru-52829.jpg);
 }
 
 .Game-right {
-    background-color: aquamarine;
+    background-position:50% 50%;
+    background-size: cover;
+    background-image: url(http://bgfons.com/uploads/leather/leather_texture4315.jpg)
 }
 
 .Game-players {
     list-style-type: none;
     background-color: antiquewhite;
+    opacity:0.7;
 }
 
 .Game-deck {
-    background-color: chartreuse;
+    background-color: Snow;
     height: 60pt;
     width: 50pt;
     text-align: center;
@@ -37,14 +42,18 @@
 
 .Game-association {
     background-color: darkorange;
+    opacity:0.7;
 }
 
 .Game-association-input {
     background-color: darkorange;
+    opacity:0.7;
 }
 
 .Game-card-big {
-    background-color: cornflowerblue;
+    background-position:50% 50%;
+    background-size: cover;
+    background-image:url(http://luxfon.com/pic/201203/2560x1440/luxfon.com-6938.jpg);
     height: 300pt;
 }
 

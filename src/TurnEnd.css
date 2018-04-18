@@ -13,5 +13,10 @@
 }
 
 .TurnEnd-correct {
-    background-color: chartreuse;
+    background-position:50% 50%;
+    background-size: cover;
+    background-image: url(http://bgfons.com/uploads/leather/leather_texture4315.jpg);
+    color: snow;
+    text-shadow: 2px 2px 3px #000;
+
 }
